@@ -34,7 +34,7 @@ function ReportsPage() {
     <SiteLayout>
       <section className="bg-cream section-y">
         <div className="container-mirani max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-on-light dark:text-brand cb:text-secondary">
             Transparency
           </p>
           <h1 className="mt-3 text-4xl md:text-5xl font-bold text-ink">Reports & Publications</h1>
@@ -53,8 +53,8 @@ function ReportsPage() {
                 onClick={() => setType(t)}
                 className={`px-4 py-2 rounded-full text-sm font-semibold border transition-colors min-h-[44px] ${
                   type === t
-                    ? "bg-ink text-white border-ink"
-                    : "bg-white text-ink border-border hover:border-ink"
+                    ? "bg-brand-ink text-brand-ink-foreground border-brand-ink"
+                    : "bg-card text-ink border-border hover:border-ink"
                 }`}
               >
                 {t}
@@ -68,10 +68,10 @@ function ReportsPage() {
               return (
                 <div
                   key={r.title}
-                  className="flex items-center justify-between gap-4 rounded-xl border border-border bg-white p-5 hover:border-ink transition-colors"
+                  className="flex items-center justify-between gap-4 rounded-xl border border-border bg-card p-5 hover:border-ink transition-colors"
                 >
                   <div className="flex items-center gap-4 min-w-0">
-                    <div className="w-12 h-12 rounded-lg bg-brand/10 text-brand flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-lg bg-brand/10 text-brand-on-light dark:text-brand cb:text-brand flex items-center justify-center shrink-0">
                       <Icon className="h-6 w-6" />
                     </div>
                     <div className="min-w-0">

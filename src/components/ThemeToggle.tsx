@@ -1,22 +1,22 @@
-import { Sun, Moon, Leaf } from "lucide-react";
+import { Sun, Moon, Eye } from "lucide-react";
 import { useTheme, type Theme } from "@/lib/theme";
 
 const ICONS: Record<Theme, typeof Sun> = {
   light: Sun,
   dark: Moon,
-  sepia: Leaf,
+  cb: Eye,
 };
 
 const LABELS: Record<Theme, string> = {
   light: "Light mode",
   dark: "Dark mode",
-  sepia: "Sepia mode",
+  cb: "Colorblind-safe mode",
 };
 
 const NEXT_LABEL: Record<Theme, string> = {
   light: "Switch to dark mode",
-  dark: "Switch to sepia mode",
-  sepia: "Switch to light mode",
+  dark: "Switch to colorblind-safe mode",
+  cb: "Switch to light mode",
 };
 
 export function ThemeToggle({ className = "" }: { className?: string }) {

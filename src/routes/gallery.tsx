@@ -31,7 +31,7 @@ function GalleryPage() {
     <SiteLayout>
       <section className="bg-cream section-y">
         <div className="container-mirani max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-on-light dark:text-brand cb:text-secondary">
             Gallery
           </p>
           <h1 className="mt-3 text-4xl md:text-5xl font-bold text-ink">
@@ -53,8 +53,8 @@ function GalleryPage() {
                 onClick={() => setActive(c)}
                 className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition-colors min-h-[44px] ${
                   active === c
-                    ? "bg-ink text-white border-ink"
-                    : "bg-white text-ink border-border hover:border-ink"
+                    ? "bg-brand-ink text-brand-ink-foreground border-brand-ink"
+                    : "bg-card text-ink border-border hover:border-ink"
                 }`}
               >
                 {c}

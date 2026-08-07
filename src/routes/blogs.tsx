@@ -45,7 +45,7 @@ function BlogsPage() {
     <SiteLayout>
       <section className="bg-cream section-y">
         <div className="container-mirani max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-on-light dark:text-brand cb:text-secondary">
             Journal
           </p>
           <h1 className="mt-3 text-4xl md:text-5xl font-bold text-ink">
@@ -68,8 +68,8 @@ function BlogsPage() {
                 search={c === "All" ? {} : { category: c }}
                 className={`px-4 py-2 rounded-full text-sm font-semibold border transition-colors min-h-[44px] inline-flex items-center ${
                   active === c
-                    ? "bg-ink text-white border-ink"
-                    : "bg-white text-ink border-border hover:border-ink"
+                    ? "bg-brand-ink text-brand-ink-foreground border-brand-ink"
+                    : "bg-card text-ink border-border hover:border-ink"
                 }`}
               >
                 {c}
@@ -99,7 +99,7 @@ function BlogCard({ post }: { post: BlogPost }) {
     <Link
       to="/blogs/$slug"
       params={{ slug: post.slug }}
-      className="group rounded-2xl overflow-hidden bg-white border border-border hover:border-ink transition-colors flex flex-col"
+      className="group rounded-2xl overflow-hidden bg-card border border-border hover:border-ink transition-colors flex flex-col"
     >
       <div className="aspect-[16/10] overflow-hidden">
         <img
@@ -111,7 +111,7 @@ function BlogCard({ post }: { post: BlogPost }) {
       </div>
       <div className="p-6 flex-1 flex flex-col">
         <div className="flex items-center gap-3 text-xs">
-          <span className="bg-brand/10 text-brand font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
+          <span className="bg-brand/10 text-brand-on-light dark:text-brand cb:text-brand font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
             {post.category}
           </span>
           <time className="text-muted-foreground">
@@ -122,7 +122,7 @@ function BlogCard({ post }: { post: BlogPost }) {
             })}
           </time>
         </div>
-        <h3 className="mt-4 text-lg font-semibold text-ink leading-snug group-hover:text-brand transition-colors">
+        <h3 className="mt-4 text-lg font-semibold text-ink leading-snug group-hover:text-brand-on-light dark:group-hover:text-brand cb:group-hover:text-secondary transition-colors">
           {post.title}
         </h3>
         <p className="mt-2 text-sm text-muted-foreground flex-1">{post.excerpt}</p>

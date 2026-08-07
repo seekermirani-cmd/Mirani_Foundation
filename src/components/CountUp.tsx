@@ -47,7 +47,7 @@ export function CountUp({ value, suffix = "", duration = 1800, className = "" }:
   return (
     <span ref={ref} className={className}>
       {n.toLocaleString()}
-      <span className="text-brand">{suffix}</span>
+      <span className="text-brand-on-light dark:text-brand cb:text-secondary">{suffix}</span>
     </span>
   );
 }

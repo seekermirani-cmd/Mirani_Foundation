@@ -33,7 +33,7 @@ export function ScrollEnhancements() {
         type="button"
         aria-label="Back to top"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className={`fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full bg-ink text-white shadow-lg flex items-center justify-center transition-all hover:bg-brand ${
+        className={`fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full bg-brand-ink text-brand-ink-foreground shadow-lg flex items-center justify-center transition-all hover:bg-brand-on-light ${
           showTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
         }`}
       >

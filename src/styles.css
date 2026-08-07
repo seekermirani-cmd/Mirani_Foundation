@@ -3,7 +3,7 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
-@custom-variant sepia (&:is(.sepia *));
+@custom-variant cb (&:is(.cb *));
 
 /*
  * Mirani Foundation design system.
@@ -41,8 +41,11 @@
   --color-ring: var(--ring);
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
+  --color-brand-on-light: var(--brand-on-light);
   --color-ink: var(--ink);
   --color-cream: var(--cream);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-ink-foreground: var(--brand-ink-foreground);
   --color-glass-bg: var(--glass-bg);
   --color-glass-bg-strong: var(--glass-bg-strong);
   --color-glass-border: var(--glass-border);
@@ -54,8 +57,23 @@
   /* Brand */
   --brand: oklch(0.72 0.18 55);              /* #F58220 orange */
   --brand-foreground: oklch(1 0 0);
+  /* On-light variant — for any orange TEXT or orange BUTTON FILL sitting on
+     a white/cream surface (nav active link, filled CTA buttons, small
+     labels, icon accents). #F58220 itself only clears WCAG AA on dark
+     surfaces (~8.1:1); on white it's 2.59:1, which fails both the 4.5:1
+     text minimum and the 3:1 UI-component minimum. This darker shade
+     passes both directions: #C2410C text on white = 5.18:1, white text on
+     a #C2410C fill = 5.18:1. Do not use this on dark surfaces — prefer the
+     base --brand there, it already passes at ~8.1:1. */
+  --brand-on-light: #C2410C;                 /* oklch(0.55 0.19 40) approx */
   --ink: oklch(0.16 0 0);                    /* near-black */
   --cream: oklch(0.985 0.012 80);            /* #FDF8F2 warm cream */
+
+  /* Fixed (non-flipping) ink pair — for surfaces that must always be a
+     dark surface with light text, regardless of theme (footer, solid CTA
+     pills, hero base, etc). Intentionally NOT redefined in .dark or .cb. */
+  --brand-ink: oklch(0.17 0.006 55);         /* same near-black used by light-mode --ink today */
+  --brand-ink-foreground: oklch(0.98 0 0);   /* white */
 
   /* Semantic */
   --background: oklch(1 0 0);
@@ -119,37 +137,140 @@
   color-scheme: dark;
 }
 
-/* Sepia-grey — warm, paper-like, low-contrast reading mode */
-.sepia {
-  --background: oklch(0.93 0.014 75);
-  --foreground: oklch(0.28 0.012 55);
-  --card: oklch(0.96 0.014 75);
-  --card-foreground: oklch(0.28 0.012 55);
-  --popover: oklch(0.96 0.014 75);
-  --popover-foreground: oklch(0.28 0.012 55);
-  --primary: oklch(0.62 0.15 50);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.28 0.012 55);
-  --secondary-foreground: oklch(0.96 0.01 75);
-  --muted: oklch(0.89 0.014 70);
-  --muted-foreground: oklch(0.45 0.014 55);
-  --accent: oklch(0.89 0.016 72);
-  --accent-foreground: oklch(0.28 0.012 55);
-  --destructive: oklch(0.55 0.18 25);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.8 0.014 65);
-  --input: oklch(0.8 0.014 65);
-  --ring: oklch(0.62 0.15 50);
-  --ink: oklch(0.28 0.012 55);
-  --cream: oklch(0.91 0.016 72);
+/* Colorblind-safe mode — built on the Okabe & Ito "Color Universal Design"
+   (CUD) palette, safe across protanopia, deuteranopia and tritanopia at
+   once. Structurally this is a LIGHT mode (near-white bg / near-black text),
+   not a dark mode — it just swaps hue choices and adds redundant non-color
+   cues (see the `.cb a` underline rule and the AlertCircle icon next to
+   form errors in contact.tsx). All colors below are contrast-checked
+   against their typical background (see PR notes / WebAIM):
+     - primary (deepened brand orange) on white:  ~4.95:1
+     - secondary (Okabe-Ito blue #0072B2) on white: ~5.19:1
+     - destructive (deepened vermillion) on white:  ~8.15:1
+   --brand-ink / --brand-ink-foreground are intentionally NOT redefined
+   here — black-on-white / white-on-black is safe for every CVD type, so
+   the fixed footer/CTA pattern needs no special treatment in this mode. */
+.cb {
+  /* Subtle cool-neutral canvas (not pure white) so CB mode reads as
+     visibly distinct from Bright mode at a glance. Cards/popovers stay
+     pure white per spec — only the surrounding page canvas shifts, and
+     the shift is deliberately minimal (98.2% lightness, faint blue hue)
+     so it stays "clean," not a visible gray box. */
+  --background: oklch(0.982 0.004 245);
+  --foreground: oklch(0.16 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0 0);
 
-  --glass-bg: oklch(0.91 0.016 72 / 0.72);
-  --glass-bg-strong: oklch(0.91 0.016 72 / 0.92);
-  --glass-border: oklch(1 0 0 / 0.35);
-  --glass-glow: oklch(0.62 0.15 50 / 0.16);
-  --spotlight-color: oklch(0.62 0.15 50 / 0.12);
+  /* Primary — brand orange, deepened from the marketing #F58220 so text
+     and icons drawn in it clear 4.5:1 on white. Same hue family as brand,
+     so the identity is preserved, just tuned for accessibility. */
+  --primary: oklch(0.556 0.129 54.8);   /* #AB5B16 */
+  --primary-foreground: oklch(1 0 0);
+  --brand: oklch(0.556 0.129 54.8);
+  --brand-foreground: oklch(1 0 0);
+  --brand-on-light: oklch(0.556 0.129 54.8); /* alias to the already-safe cb brand — avoid a second orange */
+
+  /* Secondary — Okabe-Ito Blue, the single hue CUD research shows stays
+     distinguishable from orange across every common CVD type. */
+  --secondary: oklch(0.532 0.131 244);  /* #0072B2 */
+  --secondary-foreground: oklch(1 0 0);
+
+  --muted: oklch(0.96 0.004 75);
+  --muted-foreground: oklch(0.4 0.01 60);
+  --accent: oklch(0.95 0.02 244);       /* faint blue-tinted hover, not a categorical hue */
+  --accent-foreground: oklch(0.16 0 0);
+
+  /* Destructive — deliberately pushed darker AND further toward red (not
+     just re-using Okabe-Ito's vermillion as-is) so it stays clearly
+     separated by lightness from the deepened brand orange above; relying
+     on hue alone between two warm colors this close is exactly what CUD
+     warns against. Paired with an AlertCircle icon on form errors so it
+     never depends on color alone either. */
+  --destructive: oklch(0.444 0.134 32); /* #8F2E1E */
+  --destructive-foreground: oklch(1 0 0);
+
+  /* Borders/inputs get a touch more contrast than light mode — useful for
+     low-vision users who often land in this mode alongside CVD. */
+  --border: oklch(0.79 0.01 70);
+  --input: oklch(0.79 0.01 70);
+  --ring: oklch(0.556 0.129 54.8);
+
+  --ink: oklch(0.16 0 0);
+  /* Alternating section surface — same cool-neutral family as
+     --background above (not the warm marketing cream) so section
+     rhythm stays consistent with the differentiated canvas. */
+  --cream: oklch(0.964 0.007 245);
+
+  /* Glass surfaces kept, but calmer: less transparency swing and
+     noticeably lower glow intensity (see "Reduce Decorative Effects"). */
+  --glass-bg: oklch(1 0 0 / 0.82);
+  --glass-bg-strong: oklch(1 0 0 / 0.96);
+  --glass-border: oklch(0.79 0.01 70 / 0.7);
+  --glass-glow: oklch(0.556 0.129 54.8 / 0.09);
+  --spotlight-color: oklch(0.556 0.129 54.8 / 0.07);
 
   color-scheme: light;
+}
+
+/* CB mode: a link must never be distinguished from surrounding text by
+   color alone. Underline every text link permanently (not just on
+   :hover). Pill-shaped CTA buttons are excluded — their shape and fill
+   already separate them from text, so underlining would just look broken. */
+.cb :where(a):not(.btn-brand, .btn-ink, .btn-outline-ink) {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* CB mode: calmer surfaces. Same glass/shadow language, less intensity —
+   blur and shadow values aren't tokenized upstream, so these are scoped
+   overrides of the existing utilities rather than new ones. */
+.cb .glass-header,
+.cb .glass-header-scrolled {
+  backdrop-filter: blur(6px) saturate(115%);
+  -webkit-backdrop-filter: blur(6px) saturate(115%);
+}
+.cb .glass-card {
+  backdrop-filter: blur(6px) saturate(115%);
+  -webkit-backdrop-filter: blur(6px) saturate(115%);
+}
+.cb .glass-card-border::before { opacity: 0.2; }
+.cb .glass-card-border:hover::before { opacity: 0.45; }
+.cb .glass-card-border::after { display: none; }
+.cb .blob { opacity: 0.15; filter: blur(50px); animation-duration: 32s; }
+.cb .shine-sweep::after { display: none; }
+.cb :where(.hover\:shadow-lg, .hover\:shadow-xl, .hover\:shadow-2xl):hover {
+  box-shadow: 0 4px 14px oklch(0.16 0 0 / 0.1);
+}
+
+/* CB mode: calmer motion. Keep interactions responsive, reduce lift/zoom. */
+.cb :where(.hover\:-translate-y-1, .hover\:-translate-y-2):hover {
+  transform: translateY(-2px);
+}
+.cb .group:hover :where(.group-hover\:scale-105, .group-hover\:scale-110) {
+  transform: scale(1.02);
+}
+.cb .magnetic { transition-duration: 0.15s; }
+
+/* CB mode: slightly stronger typography and taller controls for readability. */
+.cb body {
+  font-weight: 450;
+  letter-spacing: 0.006em;
+}
+.cb p {
+  letter-spacing: 0.006em;
+  margin-bottom: 0.35em;
+}
+.cb :where(.btn-brand, .btn-ink, .btn-outline-ink) {
+  min-height: 48px;
+}
+
+/* CB mode: stronger, more visible focus ring. */
+.cb :focus-visible {
+  outline-width: 3px;
+  outline-offset: 3px;
 }
 
 @layer base {
@@ -191,7 +312,10 @@
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
   border-radius: 9999px;
-  background-color: var(--color-brand);
+  /* on-light, not the raw brand orange: a filled button's label contrast
+     depends on the button's own fill, not the page section it sits in, so
+     the AA-safe shade is correct here even on the dark hero. */
+  background-color: var(--color-brand-on-light);
   color: var(--color-brand-foreground);
   font-weight: 600;
   font-size: 0.95rem;
@@ -209,8 +333,8 @@
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
   border-radius: 9999px;
-  background-color: var(--color-ink);
-  color: white;
+  background-color: var(--color-brand-ink);
+  color: var(--color-brand-ink-foreground);
   font-weight: 600;
   font-size: 0.95rem;
   transition: all 0.2s ease;
@@ -236,7 +360,7 @@
   min-height: 44px;
 }
 @utility btn-outline-ink-hover {
-  &:hover { background-color: var(--color-ink); color: white; }
+  &:hover { background-color: var(--color-brand-ink); color: var(--color-brand-ink-foreground); }
 }
 
 @utility section-y {

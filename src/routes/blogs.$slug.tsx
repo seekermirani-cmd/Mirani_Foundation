@@ -1,7 +1,18 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
-import { blogPosts } from "@/lib/site-data";
+import { blogPosts, type BlogPost } from "@/lib/site-data";
 import { ArrowLeft } from "lucide-react";
+
+const CLOSING_NOTE: Record<BlogPost["category"], string> = {
+  Campaign:
+    "Every campaign like this one runs on people who show up. If you'd like to be part of the next one, join us on the donate page — or drop us a line.",
+  Story:
+    "Stories like this are why we do this work. If it moved you, consider supporting what comes next on our donate page — or say hello.",
+  "Press Release":
+    "For more on our ongoing partnerships and programs, visit the donate page to support our work — or get in touch.",
+  Publication:
+    "If this research resonates with you, you can support further work like it on our donate page — or reach out to learn more.",
+};
 
 export const Route = createFileRoute("/blogs/$slug")({
   loader: ({ params }) => {
@@ -63,7 +74,7 @@ function BlogDetailPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
           <div className="container-mirani absolute inset-x-0 bottom-0 pb-12 text-white">
-            <span className="inline-block bg-brand text-white text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full">
+            <span className="inline-block bg-brand text-brand-ink text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full">
               {post.category}
             </span>
             <h1 className="mt-4 text-3xl md:text-5xl font-bold max-w-4xl">{post.title}</h1>
@@ -82,12 +93,13 @@ function BlogDetailPage() {
             {post.excerpt}
           </p>
           <div className="mt-8 prose prose-lg max-w-none text-ink leading-relaxed">
-            <p>{post.content}</p>
-            <p>
-              We're grateful to every volunteer, donor and partner who made this
-              work possible. If you'd like to support the next campaign, join us
-              on the donate page — or drop us a line.
-            </p>
+            {post.content.split("\n\n").map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
+          </div>
+
+          <div className="mt-10 rounded-2xl bg-cream border border-border p-6 text-sm text-muted-foreground">
+            {CLOSING_NOTE[post.category]}
           </div>
 
           <div className="mt-12 flex gap-4">
@@ -110,16 +122,16 @@ function BlogDetailPage() {
                 key={p.slug}
                 to="/blogs/$slug"
                 params={{ slug: p.slug }}
-                className="group rounded-2xl overflow-hidden bg-white border border-border"
+                className="group rounded-2xl overflow-hidden bg-card border border-border"
               >
                 <div className="aspect-[16/10] overflow-hidden">
                   <img src={p.image} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 </div>
                 <div className="p-5">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-brand">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-brand-on-light dark:text-brand cb:text-secondary">
                     {p.category}
                   </span>
-                  <h3 className="mt-2 font-semibold text-ink group-hover:text-brand">{p.title}</h3>
+                  <h3 className="mt-2 font-semibold text-ink group-hover:text-brand-on-light dark:group-hover:text-brand cb:group-hover:text-secondary">{p.title}</h3>
                 </div>
               </Link>
             ))}

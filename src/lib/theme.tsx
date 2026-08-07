@@ -8,14 +8,14 @@ import {
   type ReactNode,
 } from "react";
 
-export type Theme = "light" | "dark" | "sepia";
+export type Theme = "light" | "dark" | "cb";
 
 const STORAGE_KEY = "mirani-theme";
-const THEMES: Theme[] = ["light", "dark", "sepia"];
+const THEMES: Theme[] = ["light", "dark", "cb"];
 
 function applyThemeClass(theme: Theme) {
   const root = document.documentElement;
-  root.classList.remove("light", "dark", "sepia");
+  root.classList.remove("light", "dark", "cb");
   root.classList.add(theme);
 
   // Trigger a brief cross-fade across every themed surface.
@@ -46,7 +46,7 @@ export const THEME_INIT_SCRIPT = `
 (function () {
   try {
     var stored = localStorage.getItem('${STORAGE_KEY}');
-    var theme = (stored === 'light' || stored === 'dark' || stored === 'sepia')
+    var theme = (stored === 'light' || stored === 'dark' || stored === 'cb')
       ? stored
       : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     document.documentElement.classList.add(theme);
@@ -71,7 +71,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   // Keep the DOM class in sync (covers the case where SSR/hydration
   // already applied a class via THEME_INIT_SCRIPT — this just confirms it).
   useEffect(() => {
-    document.documentElement.classList.remove("light", "dark", "sepia");
+    document.documentElement.classList.remove("light", "dark", "cb");
     document.documentElement.classList.add(theme);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

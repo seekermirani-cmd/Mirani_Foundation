@@ -51,8 +51,8 @@ export function SiteHeader() {
               to={item.to}
               className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                 isActive(item.to)
-                  ? "text-brand"
-                  : "text-ink hover:text-brand"
+                  ? "text-brand-on-light dark:text-brand cb:text-brand"
+                  : "text-ink hover:text-brand-on-light dark:hover:text-brand cb:hover:text-brand"
               }`}
             >
               {item.label}
@@ -117,7 +117,7 @@ export function SiteHeader() {
                 to={item.to}
                 onClick={() => setOpen(false)}
                 className={`py-3 text-base font-medium ${
-                  isActive(item.to) ? "text-brand" : "text-ink"
+                  isActive(item.to) ? "text-brand-on-light dark:text-brand cb:text-brand" : "text-ink"
                 }`}
               >
                 {item.label}

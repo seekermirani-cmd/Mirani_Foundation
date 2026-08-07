@@ -64,7 +64,7 @@ function Hero() {
   return (
     <section
       ref={parallaxRef}
-      className="relative isolate overflow-hidden bg-ink"
+      className="relative isolate overflow-hidden bg-brand-ink"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -119,7 +119,7 @@ function Hero() {
                 </Link>
               </MagneticButton>
               <MagneticButton>
-                <Link to="/donate" className="btn-outline-ink btn-outline-ink-hover !text-white !border-white/70 hover:!bg-white hover:!text-ink">
+                <Link to="/donate" className="btn-outline-ink btn-outline-ink-hover !text-white !border-white/70 hover:!bg-white hover:!text-brand-ink">
                   Donate now
                 </Link>
               </MagneticButton>
@@ -167,11 +167,11 @@ function Impact() {
       <div className="blob w-96 h-96 bottom-0 right-0" style={{ animationDelay: "-8s" }} aria-hidden />
       <div className="container-mirani relative">
         <Reveal className="max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-on-light dark:text-brand cb:text-secondary">
             Our impact
           </p>
           <h2 className="mt-3 text-3xl md:text-4xl font-bold text-ink">
-            <TextReveal text="Ten years. Thousands of stories. One shared belief." />
+            <TextReveal text="11 years, many stories. One shared belief of being helpful." />
           </h2>
         </Reveal>
         <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -203,14 +203,14 @@ function CampaignsPreview() {
       <div className="container-mirani">
         <Reveal className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-on-light dark:text-brand cb:text-secondary">
               Campaigns
             </p>
             <h2 className="mt-3 text-3xl md:text-4xl font-bold">
               <TextReveal text="Where your support is going right now." />
             </h2>
           </div>
-          <Link to="/blogs" search={{ category: "Campaign" }} className="text-sm font-semibold text-ink hover:text-brand inline-flex items-center gap-1">
+          <Link to="/blogs" search={{ category: "Campaign" }} className="text-sm font-semibold text-ink hover:text-brand-on-light dark:hover:text-brand cb:hover:text-secondary inline-flex items-center gap-1">
             View all campaigns <ArrowRight className="h-4 w-4" />
           </Link>
         </Reveal>
@@ -221,7 +221,7 @@ function CampaignsPreview() {
               key={c.slug}
               as="article"
               delay={idx * 120}
-              className="group relative rounded-2xl overflow-hidden bg-ink text-white flex flex-col transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl"
+              className="group relative rounded-2xl overflow-hidden bg-brand-ink text-brand-ink-foreground flex flex-col transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl"
             >
               <CursorSpotlight />
               <div className="relative aspect-[4/3] overflow-hidden">
@@ -232,14 +232,14 @@ function CampaignsPreview() {
                   decoding="async"
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <span className="absolute top-4 left-4 bg-brand text-white text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full">
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <span className="absolute top-4 left-4 bg-brand text-brand-ink text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full">
                   {c.category}
                 </span>
               </div>
               <div className="relative p-6 flex-1 flex flex-col">
                 <h3 className="text-xl font-semibold">{c.title}</h3>
-                <p className="mt-3 text-sm text-white/70 flex-1">{c.excerpt}</p>
+                <p className="mt-3 text-sm text-brand-ink-foreground/70 flex-1">{c.excerpt}</p>
                 <Link
                   to="/blogs/$slug"
                   params={{ slug: c.slug }}
@@ -263,16 +263,16 @@ function AboutPreview() {
       <div className="blob w-80 h-80 top-1/3 -right-16" aria-hidden />
       <div className="container-mirani relative">
         <Reveal className="max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-on-light dark:text-brand cb:text-secondary">
             About us
           </p>
           <h2 className="mt-3 text-3xl md:text-4xl font-bold text-ink">
             <TextReveal text="Three pillars. One mission." />
           </h2>
           <p className="mt-4 text-muted-foreground">
-            At Mirani Foundation, we champion health, education, and social
-            justice — working hand in hand with communities to create lasting
-            change.
+            At Mirani Foundation, we champion Health, Education, and Social
+            Justice — working hand in hand with communities to create lasting
+            change, one act of care at a time.
           </p>
         </Reveal>
 
@@ -318,14 +318,14 @@ function GalleryPreview() {
       <div className="container-mirani">
         <Reveal className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-on-light dark:text-brand cb:text-secondary">
               Gallery
             </p>
             <h2 className="mt-3 text-3xl md:text-4xl font-bold">
               <TextReveal text="Moments from the field." />
             </h2>
           </div>
-          <Link to="/gallery" className="text-sm font-semibold text-ink hover:text-brand inline-flex items-center gap-1">
+          <Link to="/gallery" className="text-sm font-semibold text-ink hover:text-brand-on-light dark:hover:text-brand cb:hover:text-secondary inline-flex items-center gap-1">
             View all photos <ArrowRight className="h-4 w-4" />
           </Link>
         </Reveal>
@@ -344,7 +344,7 @@ function GalleryPreview() {
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
                 <p className="text-white text-sm font-medium translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                   {g.caption}
                 </p>

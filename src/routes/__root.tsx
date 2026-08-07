@@ -33,6 +33,7 @@ function NotFoundComponent() {
     </div>
   );
 }
+
 function ErrorComponent({
   error,
   reset,
@@ -78,6 +79,7 @@ function ErrorComponent({
     </div>
   );
 }
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
