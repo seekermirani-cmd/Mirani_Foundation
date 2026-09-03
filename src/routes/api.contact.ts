@@ -3,12 +3,18 @@ import {
   TurnstileVerificationError,
   verifyTurnstileToken,
 } from "@/lib/server/turnstile";
+import {
+  appendContactSubmissionToSheet,
+  isContactSheetConfigured,
+  SheetNotConfiguredError,
+} from "@/lib/server/contact-sheets";
 
 /**
  * POST /api/contact
  *
  * Minimal, production-ready endpoint for the contact/volunteer form.
- * Flow: validate request -> verify Turnstile -> (future) persist -> respond.
+ * Flow: validate request -> verify Turnstile -> persist to the volunteer
+ * or query Google Sheet (see GOOGLE_SHEET_CONTACT_SETUP.md) -> respond.
  *
  * This file lives under src/routes because TanStack Start's server routes
  * are file-based, exactly like the page routes already in this folder —
@@ -103,6 +109,23 @@ async function handleContactSubmission(request: Request): Promise<Response> {
       );
     }
 
+    // 2b. Confirm the destination sheet for this submission mode is
+    // configured before doing the (slower, external) Turnstile check.
+    const kind = body.mode === "volunteer" ? "volunteer" : "query";
+    if (!isContactSheetConfigured(kind)) {
+      const envVar =
+        kind === "volunteer"
+          ? "VOLUNTEER_SHEET_WEBHOOK_URL"
+          : "QUERY_SHEET_WEBHOOK_URL";
+      return jsonResponse(
+        {
+          success: false,
+          error: `Google Sheet isn't connected yet. Set ${envVar} in the environment (see GOOGLE_SHEET_CONTACT_SETUP.md) before accepting ${kind} submissions.`,
+        },
+        501,
+      );
+    }
+
     // 3. Verify Turnstile
     const clientIp =
       request.headers.get("cf-connecting-ip") ??
@@ -129,11 +152,26 @@ async function handleContactSubmission(request: Request): Promise<Response> {
       throw error;
     }
 
-    // 4. Placeholder for future persistence — intentionally not implemented yet.
-    // TODO(persistence): Google Sheets — append a row via the Sheets API.
-    // TODO(persistence): Appwrite — create a document in a "submissions" collection.
-    // TODO(persistence): PostgreSQL — insert into a `contact_submissions` table.
+    // 4. Persist to the volunteer or query Google Sheet (separate sheets so
+    // the two streams can be triaged independently). See
+    // GOOGLE_SHEET_CONTACT_SETUP.md for how the sheets/webhooks are set up.
     // TODO(notifications): send an email/Slack alert to the team on new submissions.
+    try {
+      await appendContactSubmissionToSheet(kind, {
+        name: body.name!.trim(),
+        email: body.email!.trim(),
+        phone: body.phone!.trim(),
+        location: body.location!.trim(),
+        message: body.message!.trim(),
+      });
+    } catch (error) {
+      const message =
+        error instanceof SheetNotConfiguredError
+          ? error.message
+          : `Failed to save your ${kind} submission: ${error instanceof Error ? error.message : String(error)}`;
+      console.error(message);
+      return jsonResponse({ success: false, error: message }, 502);
+    }
 
     // 5. Success response
     return jsonResponse(

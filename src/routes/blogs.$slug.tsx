@@ -1,6 +1,9 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { blogPosts, type BlogPost } from "@/lib/site-data";
+import { BLOG_IMAGE_PLACEHOLDER, fetchAllBlogPosts, useBlogPosts } from "@/lib/blog-store";
+import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 import { ArrowLeft } from "lucide-react";
 
 const CLOSING_NOTE: Record<BlogPost["category"], string> = {
@@ -15,13 +18,20 @@ const CLOSING_NOTE: Record<BlogPost["category"], string> = {
 };
 
 export const Route = createFileRoute("/blogs/$slug")({
+  // NOTE: only the built-in posts (site-data.ts) can be resolved here,
+  // because this loader can run server-side and admin-created posts
+  // currently live in the browser's localStorage (see src/lib/blog-store.ts
+  // for why — there's no database wired up yet). If a post isn't in the
+  // static list we don't 404 immediately; BlogDetailPage checks the
+  // client-side store on mount before giving up. Once posts are persisted
+  // server-side, this loader should fetch from there instead and this
+  // workaround can go away.
   loader: ({ params }) => {
-    const post = blogPosts.find((p) => p.slug === params.slug);
-    if (!post) throw notFound();
+    const post = blogPosts.find((p) => p.slug === params.slug) ?? null;
     return { post };
   },
   head: ({ loaderData }) => ({
-    meta: loaderData
+    meta: loaderData?.post
       ? [
           { title: `${loaderData.post.title} — Mirani Foundation` },
           { name: "description", content: loaderData.post.excerpt },
@@ -31,21 +41,9 @@ export const Route = createFileRoute("/blogs/$slug")({
           { property: "og:url", content: `/blogs/${loaderData.post.slug}` },
         ]
       : [],
-    links: loaderData
-      ? [{ rel: "canonical", href: `/blogs/${loaderData.post.slug}` }]
-      : [],
+    links: loaderData?.post ? [{ rel: "canonical", href: `/blogs/${loaderData.post.slug}` }] : [],
   }),
   component: BlogDetailPage,
-  notFoundComponent: () => (
-    <SiteLayout>
-      <div className="container-mirani section-y text-center">
-        <h1 className="text-3xl font-bold">Post not found</h1>
-        <Link to="/blogs" className="mt-4 inline-block btn-ink btn-ink-hover">
-          Back to blogs
-        </Link>
-      </div>
-    </SiteLayout>
-  ),
   errorComponent: ({ error, reset }) => (
     <SiteLayout>
       <div className="container-mirani section-y text-center">
@@ -59,19 +57,59 @@ export const Route = createFileRoute("/blogs/$slug")({
   ),
 });
 
+function NotFoundNotice() {
+  return (
+    <SiteLayout>
+      <div className="container-mirani section-y text-center">
+        <h1 className="text-3xl font-bold">Post not found</h1>
+        <Link to="/blogs" className="mt-4 inline-block btn-ink btn-ink-hover">
+          Back to blogs
+        </Link>
+      </div>
+    </SiteLayout>
+  );
+}
+
+function PostImage({ post, className }: { post: BlogPost; className: string }) {
+  if (post.image === BLOG_IMAGE_PLACEHOLDER) {
+    return <ImagePlaceholder className={className} />;
+  }
+  return <img src={post.image} alt={post.title} className={className} />;
+}
+
 function BlogDetailPage() {
-  const { post } = Route.useLoaderData();
-  const more = blogPosts.filter((p) => p.slug !== post.slug).slice(0, 3);
+  const params = Route.useParams();
+  const { post: staticPost } = Route.useLoaderData();
+  const [post, setPost] = useState<BlogPost | null>(staticPost);
+  const [checkedClientStore, setCheckedClientStore] = useState(Boolean(staticPost));
+  const allPosts = useBlogPosts();
+
+  // Falls back to the sheet-backed store when the post wasn't found in the
+  // static list — see the loader note above.
+  useEffect(() => {
+    if (staticPost) return;
+    let cancelled = false;
+    fetchAllBlogPosts().then((all) => {
+      if (cancelled) return;
+      setPost(all.find((p) => p.slug === params.slug) ?? null);
+      setCheckedClientStore(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [staticPost, params.slug]);
+
+  if (!post) {
+    return checkedClientStore ? <NotFoundNotice /> : null;
+  }
+
+  const more = allPosts.filter((p) => p.slug !== post.slug).slice(0, 3);
 
   return (
     <SiteLayout>
       <article>
         <div className="relative h-[50vh] min-h-[360px] w-full">
-          <img
-            src={post.image}
-            alt={post.title}
-            className="h-full w-full object-cover"
-          />
+          <PostImage post={post} className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
           <div className="container-mirani absolute inset-x-0 bottom-0 pb-12 text-white">
             <span className="inline-block bg-brand text-brand-ink text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full">
@@ -89,9 +127,7 @@ function BlogDetailPage() {
         </div>
 
         <div className="container-mirani max-w-3xl section-y">
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            {post.excerpt}
-          </p>
+          <p className="text-lg text-muted-foreground leading-relaxed">{post.excerpt}</p>
           <div className="mt-8 prose prose-lg max-w-none text-ink leading-relaxed">
             {post.content.split("\n\n").map((para, i) => (
               <p key={i}>{para}</p>
@@ -125,13 +161,18 @@ function BlogDetailPage() {
                 className="group rounded-2xl overflow-hidden bg-card border border-border"
               >
                 <div className="aspect-[16/10] overflow-hidden">
-                  <img src={p.image} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <PostImage
+                    post={p}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
                 </div>
                 <div className="p-5">
                   <span className="text-xs font-semibold uppercase tracking-wider text-brand-on-light dark:text-brand cb:text-secondary">
                     {p.category}
                   </span>
-                  <h3 className="mt-2 font-semibold text-ink group-hover:text-brand-on-light dark:group-hover:text-brand cb:group-hover:text-secondary">{p.title}</h3>
+                  <h3 className="mt-2 font-semibold text-ink group-hover:text-brand-on-light dark:group-hover:text-brand cb:group-hover:text-secondary">
+                    {p.title}
+                  </h3>
                 </div>
               </Link>
             ))}

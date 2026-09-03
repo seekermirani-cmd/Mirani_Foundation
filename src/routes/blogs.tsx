@@ -2,7 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { z } from "zod";
 import { SiteLayout } from "@/components/SiteLayout";
-import { blogPosts, type BlogPost } from "@/lib/site-data";
+import { type BlogPost } from "@/lib/site-data";
+import { BLOG_IMAGE_PLACEHOLDER, useBlogPosts } from "@/lib/blog-store";
+import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 
 const CATEGORIES = ["All", "Campaign", "Story", "Press Release", "Publication"] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -32,14 +34,12 @@ export const Route = createFileRoute("/blogs")({
 function BlogsPage() {
   const { category } = Route.useSearch();
   const active: Category = category ?? "All";
+  const allPosts = useBlogPosts();
 
   const list = useMemo(() => {
-    const posts =
-      active === "All"
-        ? blogPosts
-        : blogPosts.filter((p) => p.category === active);
+    const posts = active === "All" ? allPosts : allPosts.filter((p) => p.category === active);
     return [...posts].sort((a, b) => (a.date < b.date ? 1 : -1));
-  }, [active]);
+  }, [active, allPosts]);
 
   return (
     <SiteLayout>
@@ -48,12 +48,10 @@ function BlogsPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-on-light dark:text-brand cb:text-secondary">
             Journal
           </p>
-          <h1 className="mt-3 text-4xl md:text-5xl font-bold text-ink">
-            Stories & Updates
-          </h1>
+          <h1 className="mt-3 text-4xl md:text-5xl font-bold text-ink">Stories & Updates</h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            Campaigns from the field, first-person stories from our community,
-            press releases, and research publications — all in one place.
+            Campaigns from the field, first-person stories from our community, press releases, and
+            research publications — all in one place.
           </p>
         </div>
       </section>
@@ -102,12 +100,16 @@ function BlogCard({ post }: { post: BlogPost }) {
       className="group rounded-2xl overflow-hidden bg-card border border-border hover:border-ink transition-colors flex flex-col"
     >
       <div className="aspect-[16/10] overflow-hidden">
-        <img
-          src={post.image}
-          alt={post.title}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+        {post.image === BLOG_IMAGE_PLACEHOLDER ? (
+          <ImagePlaceholder />
+        ) : (
+          <img
+            src={post.image}
+            alt={post.title}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        )}
       </div>
       <div className="p-6 flex-1 flex flex-col">
         <div className="flex items-center gap-3 text-xs">

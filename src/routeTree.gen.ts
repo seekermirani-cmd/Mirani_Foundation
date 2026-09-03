@@ -16,8 +16,14 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DonateRouteImport } from './routes/donate'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as ApiBlogsRouteImport } from './routes/api.blogs'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
 import { Route as BlogsSlugRouteImport } from './routes/blogs.$slug'
+import { Route as AdminBlogsNewRouteImport } from './routes/admin.blogs.new'
+import { Route as ApiAdminLoginRouteImport } from './routes/api.admin.login'
+import { Route as ApiAdminLogoutRouteImport } from './routes/api.admin.logout'
+import { Route as ApiAdminSessionRouteImport } from './routes/api.admin.session'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -54,6 +60,16 @@ const ReportsRoute = ReportsRouteImport.update({
   path: '/reports',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBlogsRoute = ApiBlogsRouteImport.update({
+  id: '/api/blogs',
+  path: '/api/blogs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiContactRoute = ApiContactRouteImport.update({
   id: '/api/contact',
   path: '/api/contact',
@@ -64,6 +80,26 @@ const BlogsSlugRoute = BlogsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => BlogsRoute,
 } as any)
+const AdminBlogsNewRoute = AdminBlogsNewRouteImport.update({
+  id: '/admin/blogs/new',
+  path: '/admin/blogs/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminLoginRoute = ApiAdminLoginRouteImport.update({
+  id: '/api/admin/login',
+  path: '/api/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminLogoutRoute = ApiAdminLogoutRouteImport.update({
+  id: '/api/admin/logout',
+  path: '/api/admin/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminSessionRoute = ApiAdminSessionRouteImport.update({
+  id: '/api/admin/session',
+  path: '/api/admin/session',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -73,8 +109,14 @@ export interface FileRoutesByFullPath {
   '/donate': typeof DonateRoute
   '/gallery': typeof GalleryRoute
   '/reports': typeof ReportsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/api/blogs': typeof ApiBlogsRoute
   '/api/contact': typeof ApiContactRoute
   '/blogs/$slug': typeof BlogsSlugRoute
+  '/admin/blogs/new': typeof AdminBlogsNewRoute
+  '/api/admin/login': typeof ApiAdminLoginRoute
+  '/api/admin/logout': typeof ApiAdminLogoutRoute
+  '/api/admin/session': typeof ApiAdminSessionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -84,8 +126,14 @@ export interface FileRoutesByTo {
   '/donate': typeof DonateRoute
   '/gallery': typeof GalleryRoute
   '/reports': typeof ReportsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/api/blogs': typeof ApiBlogsRoute
   '/api/contact': typeof ApiContactRoute
   '/blogs/$slug': typeof BlogsSlugRoute
+  '/admin/blogs/new': typeof AdminBlogsNewRoute
+  '/api/admin/login': typeof ApiAdminLoginRoute
+  '/api/admin/logout': typeof ApiAdminLogoutRoute
+  '/api/admin/session': typeof ApiAdminSessionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -96,8 +144,14 @@ export interface FileRoutesById {
   '/donate': typeof DonateRoute
   '/gallery': typeof GalleryRoute
   '/reports': typeof ReportsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/api/blogs': typeof ApiBlogsRoute
   '/api/contact': typeof ApiContactRoute
   '/blogs/$slug': typeof BlogsSlugRoute
+  '/admin/blogs/new': typeof AdminBlogsNewRoute
+  '/api/admin/login': typeof ApiAdminLoginRoute
+  '/api/admin/logout': typeof ApiAdminLogoutRoute
+  '/api/admin/session': typeof ApiAdminSessionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -109,8 +163,14 @@ export interface FileRouteTypes {
     | '/donate'
     | '/gallery'
     | '/reports'
+    | '/admin/login'
+    | '/api/blogs'
     | '/api/contact'
     | '/blogs/$slug'
+    | '/admin/blogs/new'
+    | '/api/admin/login'
+    | '/api/admin/logout'
+    | '/api/admin/session'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -120,8 +180,14 @@ export interface FileRouteTypes {
     | '/donate'
     | '/gallery'
     | '/reports'
+    | '/admin/login'
+    | '/api/blogs'
     | '/api/contact'
     | '/blogs/$slug'
+    | '/admin/blogs/new'
+    | '/api/admin/login'
+    | '/api/admin/logout'
+    | '/api/admin/session'
   id:
     | '__root__'
     | '/'
@@ -131,8 +197,14 @@ export interface FileRouteTypes {
     | '/donate'
     | '/gallery'
     | '/reports'
+    | '/admin/login'
+    | '/api/blogs'
     | '/api/contact'
     | '/blogs/$slug'
+    | '/admin/blogs/new'
+    | '/api/admin/login'
+    | '/api/admin/logout'
+    | '/api/admin/session'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -143,7 +215,13 @@ export interface RootRouteChildren {
   DonateRoute: typeof DonateRoute
   GalleryRoute: typeof GalleryRoute
   ReportsRoute: typeof ReportsRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  ApiBlogsRoute: typeof ApiBlogsRoute
   ApiContactRoute: typeof ApiContactRoute
+  AdminBlogsNewRoute: typeof AdminBlogsNewRoute
+  ApiAdminLoginRoute: typeof ApiAdminLoginRoute
+  ApiAdminLogoutRoute: typeof ApiAdminLogoutRoute
+  ApiAdminSessionRoute: typeof ApiAdminSessionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -197,6 +275,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReportsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/blogs': {
+      id: '/api/blogs'
+      path: '/api/blogs'
+      fullPath: '/api/blogs'
+      preLoaderRoute: typeof ApiBlogsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/contact': {
       id: '/api/contact'
       path: '/api/contact'
@@ -210,6 +302,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/blogs/$slug'
       preLoaderRoute: typeof BlogsSlugRouteImport
       parentRoute: typeof BlogsRoute
+    }
+    '/admin/blogs/new': {
+      id: '/admin/blogs/new'
+      path: '/admin/blogs/new'
+      fullPath: '/admin/blogs/new'
+      preLoaderRoute: typeof AdminBlogsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/login': {
+      id: '/api/admin/login'
+      path: '/api/admin/login'
+      fullPath: '/api/admin/login'
+      preLoaderRoute: typeof ApiAdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/logout': {
+      id: '/api/admin/logout'
+      path: '/api/admin/logout'
+      fullPath: '/api/admin/logout'
+      preLoaderRoute: typeof ApiAdminLogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/session': {
+      id: '/api/admin/session'
+      path: '/api/admin/session'
+      fullPath: '/api/admin/session'
+      preLoaderRoute: typeof ApiAdminSessionRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -232,7 +352,13 @@ const rootRouteChildren: RootRouteChildren = {
   DonateRoute: DonateRoute,
   GalleryRoute: GalleryRoute,
   ReportsRoute: ReportsRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  ApiBlogsRoute: ApiBlogsRoute,
   ApiContactRoute: ApiContactRoute,
+  AdminBlogsNewRoute: AdminBlogsNewRoute,
+  ApiAdminLoginRoute: ApiAdminLoginRoute,
+  ApiAdminLogoutRoute: ApiAdminLogoutRoute,
+  ApiAdminSessionRoute: ApiAdminSessionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

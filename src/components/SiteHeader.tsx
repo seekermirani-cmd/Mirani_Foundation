@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import logo from "@/assets/mirani-logo.png";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { MagneticButton } from "@/components/MagneticButton";
+import { useAdminAuth } from "@/lib/admin-auth";
+import { ShieldCheck } from "lucide-react";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -12,6 +14,23 @@ const NAV = [
   { to: "/reports", label: "Reports" },
   { to: "/contact", label: "Contact" },
 ];
+
+function AdminNavLink({ onNavigate }: { onNavigate?: () => void }) {
+  const { ready, authenticated } = useAdminAuth();
+  if (!ready) return null;
+
+  return (
+    <Link
+      to={authenticated ? "/admin/blogs/new" : "/admin/login"}
+      onClick={onNavigate}
+      className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:text-ink transition-colors"
+      title={authenticated ? "Add a new blog post" : "Admin login"}
+    >
+      <ShieldCheck className="h-4 w-4" />
+      {authenticated ? "Add Blog" : "Admin"}
+    </Link>
+  );
+}
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -26,8 +45,7 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const isActive = (to: string) =>
-    to === "/" ? pathname === "/" : pathname.startsWith(to);
+  const isActive = (to: string) => (to === "/" ? pathname === "/" : pathname.startsWith(to));
 
   return (
     <header
@@ -61,9 +79,12 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-2">
+          <AdminNavLink />
           <ThemeToggle />
           <MagneticButton>
-            <Link to="/donate" className="btn-ink btn-ink-hover">Donate</Link>
+            <Link to="/donate" className="btn-ink btn-ink-hover">
+              Donate
+            </Link>
           </MagneticButton>
           <MagneticButton>
             <a
@@ -117,13 +138,16 @@ export function SiteHeader() {
                 to={item.to}
                 onClick={() => setOpen(false)}
                 className={`py-3 text-base font-medium ${
-                  isActive(item.to) ? "text-brand-on-light dark:text-brand cb:text-brand" : "text-ink"
+                  isActive(item.to)
+                    ? "text-brand-on-light dark:text-brand cb:text-brand"
+                    : "text-ink"
                 }`}
               >
                 {item.label}
               </Link>
             ))}
             <div className="flex flex-col gap-3 pt-3">
+              <AdminNavLink onNavigate={() => setOpen(false)} />
               <Link to="/donate" onClick={() => setOpen(false)} className="btn-ink btn-ink-hover">
                 Donate
               </Link>
