@@ -1,13 +1,20 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { useAdminAuth } from "@/lib/admin-auth";
-import { addBlogPost, BLOG_IMAGE_PLACEHOLDER } from "@/lib/blog-store";
+import {
+  addBlogPost,
+  BLOG_IMAGE_PLACEHOLDER,
+  deleteBlogPost,
+  fetchAdminBlogPosts,
+} from "@/lib/blog-store";
 import type { BlogPost } from "@/lib/site-data";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
+import { RichTextEditor } from "@/components/RichTextEditor";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { getPlainTextFromRichText } from "@/lib/rich-text";
 import {
   Select,
   SelectContent,
@@ -15,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AlertCircle, LogOut } from "lucide-react";
+import { AlertCircle, ExternalLink, LogOut, RefreshCw, Trash2 } from "lucide-react";
 
 const CATEGORIES: BlogPost["category"][] = ["Campaign", "Story", "Press Release", "Publication"];
 
@@ -44,7 +51,29 @@ function AddBlogPage() {
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loadingPosts, setLoadingPosts] = useState(false);
+  const [deletingSlug, setDeletingSlug] = useState("");
+
+  const loadPosts = useCallback(async () => {
+    setLoadingPosts(true);
+    try {
+      const sheetPosts = await fetchAdminBlogPosts();
+      setPosts([...sheetPosts].sort((a, b) => (a.date < b.date ? 1 : -1)));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load admin-created posts.");
+    } finally {
+      setLoadingPosts(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (ready && authenticated) {
+      void loadPosts();
+    }
+  }, [ready, authenticated, loadPosts]);
 
   if (!ready || !authenticated) {
     return null;
@@ -53,8 +82,9 @@ function AddBlogPage() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
+    setNotice("");
 
-    if (!title.trim() || !excerpt.trim() || !content.trim()) {
+    if (!title.trim() || !excerpt.trim() || !getPlainTextFromRichText(content).trim()) {
       setError("Title, excerpt and content are all required.");
       return;
     }
@@ -69,11 +99,31 @@ function AddBlogPage() {
         date,
         image: imageUrl,
       });
-      navigate({ to: "/blogs/$slug", params: { slug: post.slug } });
+      navigate({ to: "/blog-reader/$slug", params: { slug: post.slug } });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to publish the post.");
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  async function handleDeletePost(post: BlogPost) {
+    const confirmed = window.confirm(
+      `Delete "${post.title}"? This removes the post from the shared blog list.`,
+    );
+    if (!confirmed) return;
+
+    setError("");
+    setNotice("");
+    setDeletingSlug(post.slug);
+    try {
+      await deleteBlogPost(post.slug);
+      setPosts((current) => current.filter((item) => item.slug !== post.slug));
+      setNotice("Blog post deleted.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete the post.");
+    } finally {
+      setDeletingSlug("");
     }
   }
 
@@ -106,7 +156,7 @@ function AddBlogPage() {
       </section>
 
       <section className="section-y">
-        <div className="container-mirani max-w-3xl grid md:grid-cols-[1fr_220px] gap-8">
+        <div className="container-mirani max-w-4xl grid md:grid-cols-[1fr_280px] gap-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
               <Label htmlFor="title">Title</Label>
@@ -164,13 +214,11 @@ function AddBlogPage() {
 
             <div className="space-y-2">
               <Label htmlFor="content">Content</Label>
-              <Textarea
+              <RichTextEditor
                 id="content"
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="Full post — separate paragraphs with a blank line"
-                rows={10}
-                required
+                onChange={setContent}
+                placeholder="Write and format the full post"
               />
             </div>
 
@@ -194,6 +242,8 @@ function AddBlogPage() {
               </p>
             )}
 
+            {notice && <p className="text-sm font-medium text-brand-on-light">{notice}</p>}
+
             <div className="flex gap-4 pt-2">
               <button
                 type="submit"
@@ -213,21 +263,83 @@ function AddBlogPage() {
             </p>
           </form>
 
-          <div>
-            <p className="text-sm font-medium text-ink mb-2">Preview</p>
-            <div className="aspect-[16/10] rounded-xl overflow-hidden border border-border">
-              {imageUrl.trim() ? (
-                <img
-                  src={imageUrl}
-                  alt="Preview"
-                  className="h-full w-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = "none";
-                  }}
-                />
-              ) : (
-                <ImagePlaceholder />
-              )}
+          <div className="space-y-6">
+            <div>
+              <p className="text-sm font-medium text-ink mb-2">Preview</p>
+              <div className="aspect-[16/10] rounded-xl overflow-hidden border border-border">
+                {imageUrl.trim() ? (
+                  <img
+                    src={imageUrl}
+                    alt="Preview"
+                    className="h-full w-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <ImagePlaceholder />
+                )}
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-border bg-card p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-sm font-semibold text-ink">Manage posts</h2>
+                  <p className="mt-1 text-xs text-muted-foreground">Delete admin-created posts.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => void loadPosts()}
+                  disabled={loadingPosts}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-ink disabled:opacity-60"
+                  aria-label="Refresh posts"
+                  title="Refresh posts"
+                >
+                  <RefreshCw className={`h-4 w-4 ${loadingPosts ? "animate-spin" : ""}`} />
+                </button>
+              </div>
+
+              <div className="mt-4 space-y-3">
+                {loadingPosts && posts.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">Loading posts...</p>
+                ) : posts.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No admin-created posts yet.</p>
+                ) : (
+                  posts.map((post) => (
+                    <div key={post.slug} className="rounded-lg border border-border p-3">
+                      <p className="text-sm font-semibold leading-snug text-ink">{post.title}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {post.category} ·{" "}
+                        {new Date(post.date).toLocaleDateString("en-IN", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        <Link
+                          to="/blog-reader/$slug"
+                          params={{ slug: post.slug }}
+                          className="inline-flex min-h-9 items-center justify-center gap-1.5 rounded-full border border-border px-3 text-xs font-semibold text-ink transition-colors hover:border-ink"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" />
+                          View
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => void handleDeletePost(post)}
+                          disabled={deletingSlug === post.slug}
+                          className="inline-flex min-h-9 items-center justify-center gap-1.5 rounded-full border border-destructive/40 px-3 text-xs font-semibold text-destructive transition-colors hover:bg-destructive hover:text-destructive-foreground disabled:opacity-60"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                          {deletingSlug === post.slug ? "Deleting..." : "Delete"}
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>

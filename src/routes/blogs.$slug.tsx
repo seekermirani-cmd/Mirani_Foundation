@@ -4,6 +4,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { blogPosts, type BlogPost } from "@/lib/site-data";
 import { BLOG_IMAGE_PLACEHOLDER, fetchAllBlogPosts, useBlogPosts } from "@/lib/blog-store";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
+import { isRichTextHtml, sanitizeRichTextHtml } from "@/lib/rich-text";
 import { ArrowLeft } from "lucide-react";
 
 const CLOSING_NOTE: Record<BlogPost["category"], string> = {
@@ -77,6 +78,25 @@ function PostImage({ post, className }: { post: BlogPost; className: string }) {
   return <img src={post.image} alt={post.title} className={className} />;
 }
 
+function BlogContent({ content }: { content: string }) {
+  if (isRichTextHtml(content)) {
+    return (
+      <div
+        className="mt-8 rich-text-content max-w-none text-ink leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: sanitizeRichTextHtml(content) }}
+      />
+    );
+  }
+
+  return (
+    <div className="mt-8 rich-text-content max-w-none text-ink leading-relaxed">
+      {content.split("\n\n").map((para, i) => (
+        <p key={i}>{para}</p>
+      ))}
+    </div>
+  );
+}
+
 function BlogDetailPage() {
   const params = Route.useParams();
   const { post: staticPost } = Route.useLoaderData();
@@ -128,11 +148,7 @@ function BlogDetailPage() {
 
         <div className="container-mirani max-w-3xl section-y">
           <p className="text-lg text-muted-foreground leading-relaxed">{post.excerpt}</p>
-          <div className="mt-8 prose prose-lg max-w-none text-ink leading-relaxed">
-            {post.content.split("\n\n").map((para, i) => (
-              <p key={i}>{para}</p>
-            ))}
-          </div>
+          <BlogContent content={post.content} />
 
           <div className="mt-10 rounded-2xl bg-cream border border-border p-6 text-sm text-muted-foreground">
             {CLOSING_NOTE[post.category]}
@@ -154,10 +170,9 @@ function BlogDetailPage() {
           <h2 className="text-2xl md:text-3xl font-bold text-ink">More stories</h2>
           <div className="mt-8 grid md:grid-cols-3 gap-6">
             {more.map((p) => (
-              <Link
+              <a
                 key={p.slug}
-                to="/blogs/$slug"
-                params={{ slug: p.slug }}
+                href={`/blog-reader/${p.slug}`}
                 className="group rounded-2xl overflow-hidden bg-card border border-border"
               >
                 <div className="aspect-[16/10] overflow-hidden">
@@ -174,7 +189,7 @@ function BlogDetailPage() {
                     {p.title}
                   </h3>
                 </div>
-              </Link>
+              </a>
             ))}
           </div>
         </div>

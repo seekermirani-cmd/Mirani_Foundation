@@ -1,6 +1,24 @@
 import { Link } from "@tanstack/react-router";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, ShieldCheck } from "lucide-react";
 import { contactInfo } from "@/lib/site-data";
+import { useAdminAuth } from "@/lib/admin-auth";
+
+function FooterAdminLink() {
+  const { ready, authenticated } = useAdminAuth();
+  if (!ready) return null;
+
+  return (
+    <Link
+      to={authenticated ? "/admin/blogs/new" : "/admin/login"}
+      className="inline-flex items-center gap-1.5 text-[11px] text-brand-ink-foreground/35 transition-colors hover:text-brand-ink-foreground/70"
+      title={authenticated ? "Add a new blog post" : "Admin login"}
+      aria-label={authenticated ? "Add a new blog post" : "Admin login"}
+    >
+      <ShieldCheck className="h-3.5 w-3.5" />
+      <span>{authenticated ? "Add Blog" : "Admin"}</span>
+    </Link>
+  );
+}
 
 export function SiteFooter() {
   return (
@@ -11,13 +29,15 @@ export function SiteFooter() {
             <span className="text-brand">Mirani</span> Foundation
           </h3>
           <p className="mt-4 text-sm leading-relaxed text-brand-ink-foreground/70 max-w-sm">
-            A grassroots NGO working across health, education and social justice
-            — walking alongside the communities we serve, not in front of them.
+            A grassroots NGO working across health, education and social justice — walking alongside
+            the communities we serve, not in front of them.
           </p>
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-wider text-brand-ink-foreground">Quick Links</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-wider text-brand-ink-foreground">
+            Quick Links
+          </h4>
           <ul className="mt-5 space-y-3 text-sm">
             {[
               { to: "/about", label: "About Us" },
@@ -37,7 +57,9 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-wider text-brand-ink-foreground">Contact</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-wider text-brand-ink-foreground">
+            Contact
+          </h4>
           <ul className="mt-5 space-y-3 text-sm">
             <li className="flex items-start gap-3">
               <Mail className="h-4 w-4 mt-0.5 text-brand shrink-0" />
@@ -53,15 +75,23 @@ export function SiteFooter() {
             </li>
             <li className="flex items-start gap-3">
               <MapPin className="h-4 w-4 mt-0.5 text-brand shrink-0" />
-              <span className="text-brand-ink-foreground/70">{contactInfo.address}</span>
+              <a
+                href={contactInfo.mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brand-ink-foreground/70 hover:text-brand transition-colors"
+              >
+                {contactInfo.address}
+              </a>
             </li>
           </ul>
         </div>
       </div>
 
       <div className="border-t border-brand-ink-foreground/10">
-        <div className="container-mirani py-6 text-center text-xs text-brand-ink-foreground/60">
-          © {new Date().getFullYear()} Mirani Foundation. All rights reserved.
+        <div className="container-mirani py-6 text-xs text-brand-ink-foreground/60 flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-3">
+          <span>© {new Date().getFullYear()} Mirani Foundation. All rights reserved.</span>
+          <FooterAdminLink />
         </div>
       </div>
     </footer>

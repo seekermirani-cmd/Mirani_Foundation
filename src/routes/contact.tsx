@@ -11,8 +11,7 @@ export const Route = createFileRoute("/contact")({
       { title: "Contact — Mirani Foundation" },
       {
         name: "description",
-        content:
-          "Get in touch, volunteer, or donate directly to Mirani Foundation.",
+        content: "Get in touch, volunteer, or donate directly to Mirani Foundation.",
       },
       { property: "og:title", content: "Contact — Mirani Foundation" },
       { property: "og:url", content: "/contact" },
@@ -34,8 +33,7 @@ function ContactPage() {
             We'd love to hear from you.
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            Donate, volunteer, or just say hello — every message reaches a real
-            person on our team.
+            Donate, volunteer, or just say hello — every message reaches a real person on our team.
           </p>
         </div>
       </section>
@@ -53,9 +51,7 @@ function ContactPage() {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-on-light dark:text-brand cb:text-secondary">
               Find us
             </p>
-            <h2 className="mt-3 text-3xl font-bold text-ink">
-              Reach out or drop in.
-            </h2>
+            <h2 className="mt-3 text-3xl font-bold text-ink">Reach out or drop in.</h2>
             <ul className="mt-6 space-y-4 text-ink">
               <li className="flex gap-3">
                 <Phone className="h-5 w-5 text-brand-on-light dark:text-brand cb:text-secondary mt-0.5" />
@@ -77,7 +73,14 @@ function ContactPage() {
               </li>
               <li className="flex gap-3">
                 <MapPin className="h-5 w-5 text-brand-on-light dark:text-brand cb:text-secondary mt-0.5" />
-                <span>{contactInfo.address}</span>
+                <a
+                  href={contactInfo.mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-brand-on-light dark:hover:text-brand cb:hover:text-secondary"
+                >
+                  {contactInfo.address}
+                </a>
               </li>
             </ul>
           </div>
@@ -120,12 +123,10 @@ function DonationCard() {
           {contactInfo.bank.accountType}
         </p>
         <p>
-          <span className="text-brand-ink-foreground/60">IFSC:</span>{" "}
-          {contactInfo.bank.ifsc}
+          <span className="text-brand-ink-foreground/60">IFSC:</span> {contactInfo.bank.ifsc}
         </p>
         <p>
-          <span className="text-brand-ink-foreground/60">Bank:</span>{" "}
-          {contactInfo.bank.bankName}
+          <span className="text-brand-ink-foreground/60">Bank:</span> {contactInfo.bank.bankName}
         </p>
         <p>
           <span className="text-brand-ink-foreground/60">Branch address:</span>{" "}
@@ -159,10 +160,8 @@ function ContactVolunteerCard() {
 
     const errs: Record<string, string> = {};
     if (!name.trim()) errs.name = "Please enter your name";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      errs.email = "Enter a valid email";
-    if (!/^[6-9]\d{9}$/.test(phone))
-      errs.phone = "Enter a valid 10-digit Indian number";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = "Enter a valid email";
+    if (!/^[6-9]\d{9}$/.test(phone)) errs.phone = "Enter a valid 10-digit Indian number";
     if (!location.trim()) errs.location = "Location is required";
     if (!message.trim()) errs.message = "Please leave a message";
     if (!captchaToken) errs.captcha = "Please verify that you are human.";
@@ -194,9 +193,7 @@ function ContactVolunteerCard() {
         setCaptchaToken("");
       }
     } catch {
-      setServerError(
-        "Network error. Please check your connection and try again.",
-      );
+      setServerError("Network error. Please check your connection and try again.");
       setCaptchaToken("");
     } finally {
       setSubmitting(false);
@@ -211,9 +208,7 @@ function ContactVolunteerCard() {
   return (
     <div className="rounded-2xl bg-card border border-border p-8">
       <h2 className="text-2xl font-bold text-ink">Volunteer or send a query</h2>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Choose what you'd like to do below.
-      </p>
+      <p className="mt-2 text-sm text-muted-foreground">Choose what you'd like to do below.</p>
 
       <div className="mt-5 inline-flex rounded-full border border-border bg-cream p-1">
         {(["volunteer", "query"] as const).map((m) => (
@@ -239,17 +234,12 @@ function ContactVolunteerCard() {
 
       {submitted ? (
         <p className="mt-6 rounded-lg bg-brand/10 text-ink p-4 text-sm">
-          Thank you! Your {mode === "volunteer" ? "application" : "message"} has
-          been received.
+          Thank you! Your {mode === "volunteer" ? "application" : "message"} has been received.
         </p>
       ) : (
         <form onSubmit={handleSubmit} className="mt-6 grid gap-4" noValidate>
           <div>
-            <input
-              name="name"
-              placeholder="Full name"
-              className={cls("name")}
-            />
+            <input name="name" placeholder="Full name" className={cls("name")} />
             {errors.name && (
               <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
                 <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden />
@@ -258,12 +248,7 @@ function ContactVolunteerCard() {
             )}
           </div>
           <div>
-            <input
-              name="email"
-              type="email"
-              placeholder="Email"
-              className={cls("email")}
-            />
+            <input name="email" type="email" placeholder="Email" className={cls("email")} />
             {errors.email && (
               <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
                 <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden />
@@ -306,9 +291,7 @@ function ContactVolunteerCard() {
               name="message"
               rows={4}
               placeholder={
-                mode === "volunteer"
-                  ? "Tell us about your area of interest"
-                  : "Your message"
+                mode === "volunteer" ? "Tell us about your area of interest" : "Your message"
               }
               className={cls("message")}
             />

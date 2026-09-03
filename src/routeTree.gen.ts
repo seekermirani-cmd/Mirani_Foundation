@@ -19,6 +19,7 @@ import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as ApiBlogsRouteImport } from './routes/api.blogs'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
+import { Route as BlogReaderSlugRouteImport } from './routes/blog-reader.$slug'
 import { Route as BlogsSlugRouteImport } from './routes/blogs.$slug'
 import { Route as AdminBlogsNewRouteImport } from './routes/admin.blogs.new'
 import { Route as ApiAdminLoginRouteImport } from './routes/api.admin.login'
@@ -75,6 +76,11 @@ const ApiContactRoute = ApiContactRouteImport.update({
   path: '/api/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogReaderSlugRoute = BlogReaderSlugRouteImport.update({
+  id: '/blog-reader/$slug',
+  path: '/blog-reader/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogsSlugRoute = BlogsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/api/blogs': typeof ApiBlogsRoute
   '/api/contact': typeof ApiContactRoute
+  '/blog-reader/$slug': typeof BlogReaderSlugRoute
   '/blogs/$slug': typeof BlogsSlugRoute
   '/admin/blogs/new': typeof AdminBlogsNewRoute
   '/api/admin/login': typeof ApiAdminLoginRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/api/blogs': typeof ApiBlogsRoute
   '/api/contact': typeof ApiContactRoute
+  '/blog-reader/$slug': typeof BlogReaderSlugRoute
   '/blogs/$slug': typeof BlogsSlugRoute
   '/admin/blogs/new': typeof AdminBlogsNewRoute
   '/api/admin/login': typeof ApiAdminLoginRoute
@@ -147,6 +155,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/api/blogs': typeof ApiBlogsRoute
   '/api/contact': typeof ApiContactRoute
+  '/blog-reader/$slug': typeof BlogReaderSlugRoute
   '/blogs/$slug': typeof BlogsSlugRoute
   '/admin/blogs/new': typeof AdminBlogsNewRoute
   '/api/admin/login': typeof ApiAdminLoginRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/api/blogs'
     | '/api/contact'
+    | '/blog-reader/$slug'
     | '/blogs/$slug'
     | '/admin/blogs/new'
     | '/api/admin/login'
@@ -183,6 +193,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/api/blogs'
     | '/api/contact'
+    | '/blog-reader/$slug'
     | '/blogs/$slug'
     | '/admin/blogs/new'
     | '/api/admin/login'
@@ -200,6 +211,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/api/blogs'
     | '/api/contact'
+    | '/blog-reader/$slug'
     | '/blogs/$slug'
     | '/admin/blogs/new'
     | '/api/admin/login'
@@ -218,6 +230,7 @@ export interface RootRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   ApiBlogsRoute: typeof ApiBlogsRoute
   ApiContactRoute: typeof ApiContactRoute
+  BlogReaderSlugRoute: typeof BlogReaderSlugRoute
   AdminBlogsNewRoute: typeof AdminBlogsNewRoute
   ApiAdminLoginRoute: typeof ApiAdminLoginRoute
   ApiAdminLogoutRoute: typeof ApiAdminLogoutRoute
@@ -296,6 +309,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog-reader/$slug': {
+      id: '/blog-reader/$slug'
+      path: '/blog-reader/$slug'
+      fullPath: '/blog-reader/$slug'
+      preLoaderRoute: typeof BlogReaderSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blogs/$slug': {
       id: '/blogs/$slug'
       path: '/$slug'
@@ -355,6 +375,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   ApiBlogsRoute: ApiBlogsRoute,
   ApiContactRoute: ApiContactRoute,
+  BlogReaderSlugRoute: BlogReaderSlugRoute,
   AdminBlogsNewRoute: AdminBlogsNewRoute,
   ApiAdminLoginRoute: ApiAdminLoginRoute,
   ApiAdminLogoutRoute: ApiAdminLogoutRoute,

@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import logo from "@/assets/mirani-logo.png";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { MagneticButton } from "@/components/MagneticButton";
-import { useAdminAuth } from "@/lib/admin-auth";
-import { ShieldCheck } from "lucide-react";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -14,23 +12,6 @@ const NAV = [
   { to: "/reports", label: "Reports" },
   { to: "/contact", label: "Contact" },
 ];
-
-function AdminNavLink({ onNavigate }: { onNavigate?: () => void }) {
-  const { ready, authenticated } = useAdminAuth();
-  if (!ready) return null;
-
-  return (
-    <Link
-      to={authenticated ? "/admin/blogs/new" : "/admin/login"}
-      onClick={onNavigate}
-      className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:text-ink transition-colors"
-      title={authenticated ? "Add a new blog post" : "Admin login"}
-    >
-      <ShieldCheck className="h-4 w-4" />
-      {authenticated ? "Add Blog" : "Admin"}
-    </Link>
-  );
-}
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -79,7 +60,6 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-2">
-          <AdminNavLink />
           <ThemeToggle />
           <MagneticButton>
             <Link to="/donate" className="btn-ink btn-ink-hover">
@@ -147,7 +127,6 @@ export function SiteHeader() {
               </Link>
             ))}
             <div className="flex flex-col gap-3 pt-3">
-              <AdminNavLink onNavigate={() => setOpen(false)} />
               <Link to="/donate" onClick={() => setOpen(false)} className="btn-ink btn-ink-hover">
                 Donate
               </Link>

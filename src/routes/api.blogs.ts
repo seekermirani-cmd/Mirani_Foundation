@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { readSessionCookie, verifyAdminSessionToken } from "@/lib/server/admin-auth";
 import {
   appendBlogPostToSheet,
+  deleteBlogPostFromSheet,
   fetchBlogPostsFromSheet,
   isSheetConfigured,
   SheetNotConfiguredError,
@@ -11,6 +12,7 @@ import { blogPosts as staticBlogPosts, type BlogPost } from "@/lib/site-data";
 /**
  * GET  /api/blogs — returns admin-created posts from the Google Sheet.
  * POST /api/blogs — appends a new post to the Google Sheet (admin-only).
+ * DELETE /api/blogs?slug=... — deletes one admin-created post (admin-only).
  */
 
 const CATEGORIES: BlogPost["category"][] = ["Campaign", "Story", "Press Release", "Publication"];
@@ -124,11 +126,47 @@ async function handlePost(request: Request): Promise<Response> {
   return jsonResponse({ success: true, post }, 200);
 }
 
+async function handleDelete(request: Request): Promise<Response> {
+  if (!(await requireAdmin(request))) {
+    return jsonResponse({ success: false, error: "Unauthorized." }, 401);
+  }
+
+  if (!isSheetConfigured()) {
+    return jsonResponse(
+      {
+        success: false,
+        error:
+          "Google Sheet isn't connected yet. Set BLOG_SHEET_WEBHOOK_URL in the environment before deleting posts.",
+      },
+      501,
+    );
+  }
+
+  const slug = new URL(request.url).searchParams.get("slug")?.trim();
+  if (!slug) {
+    return jsonResponse({ success: false, error: "A post slug is required." }, 400);
+  }
+
+  try {
+    await deleteBlogPostFromSheet(slug);
+  } catch (error) {
+    const message =
+      error instanceof SheetNotConfiguredError
+        ? error.message
+        : `Failed to delete from the Google Sheet: ${error instanceof Error ? error.message : String(error)}`;
+    console.error(message);
+    return jsonResponse({ success: false, error: message }, 502);
+  }
+
+  return jsonResponse({ success: true }, 200);
+}
+
 export const Route = createFileRoute("/api/blogs")({
   server: {
     handlers: {
       GET: async () => handleGet(),
       POST: async ({ request }) => handlePost(request),
+      DELETE: async ({ request }) => handleDelete(request),
     },
   },
 });

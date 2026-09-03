@@ -21,7 +21,16 @@ function getSheet_() {
     sheet = ss.insertSheet(SHEET_NAME);
   }
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(["slug", "title", "excerpt", "content", "category", "date", "image", "createdAt"]);
+    sheet.appendRow([
+      "slug",
+      "title",
+      "excerpt",
+      "content",
+      "category",
+      "date",
+      "image",
+      "createdAt",
+    ]);
   }
   return sheet;
 }
@@ -42,6 +51,10 @@ function doPost(e) {
     }
 
     const sheet = getSheet_();
+    if (body.action === "delete") {
+      return deletePost_(sheet, body.slug || "");
+    }
+
     sheet.appendRow([
       body.slug || "",
       body.title || "",
@@ -57,6 +70,28 @@ function doPost(e) {
   } catch (err) {
     return jsonOutput_({ success: false, error: String(err) });
   }
+}
+
+function deletePost_(sheet, slug) {
+  if (!slug) {
+    return jsonOutput_({ success: false, error: "A post slug is required." });
+  }
+
+  const values = sheet.getDataRange().getValues();
+  const header = values[0] || [];
+  const slugIndex = header.indexOf("slug");
+  if (slugIndex === -1) {
+    return jsonOutput_({ success: false, error: "The Posts sheet is missing a slug column." });
+  }
+
+  for (let rowNumber = values.length; rowNumber >= 2; rowNumber -= 1) {
+    if (String(values[rowNumber - 1][slugIndex]) === slug) {
+      sheet.deleteRow(rowNumber);
+      return jsonOutput_({ success: true });
+    }
+  }
+
+  return jsonOutput_({ success: false, error: "Post not found." });
 }
 
 /** GET — returns every post as JSON, newest first. */

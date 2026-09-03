@@ -72,6 +72,37 @@ export async function appendBlogPostToSheet(post: BlogPost): Promise<void> {
   }
 }
 
+/** Deletes one post row from the sheet by slug. Throws on any failure. */
+export async function deleteBlogPostFromSheet(slug: string): Promise<void> {
+  const url = getWebhookUrl();
+  if (!url) throw new SheetNotConfiguredError();
+
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ secret: getWebhookSecret(), action: "delete", slug }),
+    });
+  } catch (error) {
+    throw new Error(
+      `Couldn't reach the Google Sheet webhook: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+
+  if (!response.ok) {
+    throw new Error(`Google Sheet webhook responded with HTTP ${response.status}.`);
+  }
+
+  const data = (await response.json().catch(() => null)) as {
+    success?: boolean;
+    error?: string;
+  } | null;
+  if (!data?.success) {
+    throw new Error(data?.error ?? "Google Sheet webhook did not confirm the deletion.");
+  }
+}
+
 /** Fetches all posts currently stored in the sheet, oldest failures swallowed to []. */
 export async function fetchBlogPostsFromSheet(): Promise<BlogPost[]> {
   const url = getWebhookUrl();

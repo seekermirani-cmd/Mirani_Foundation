@@ -8,13 +8,7 @@ import { TextReveal } from "@/components/TextReveal";
 import { CursorSpotlight } from "@/components/CursorSpotlight";
 import { MagneticButton } from "@/components/MagneticButton";
 import { useParallax } from "@/hooks/use-parallax";
-import {
-  heroSlides,
-  impactStats,
-  campaigns,
-  pillars,
-  galleryImages,
-} from "@/lib/site-data";
+import { heroSlides, impactStats, campaigns, pillars, galleryImages } from "@/lib/site-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,14 +16,12 @@ export const Route = createFileRoute("/")({
       { title: "Mirani Foundation — Health, Education, Social Justice" },
       {
         name: "description",
-        content:
-          "Grassroots NGO championing health, education, and social justice across India.",
+        content: "Grassroots NGO championing health, education, and social justice across India.",
       },
       { property: "og:title", content: "Mirani Foundation" },
       {
         property: "og:description",
-        content:
-          "Grassroots NGO championing health, education, and social justice across India.",
+        content: "Grassroots NGO championing health, education, and social justice across India.",
       },
       { property: "og:url", content: "/" },
     ],
@@ -106,10 +98,7 @@ function Hero() {
             >
               <TextReveal text={heroSlides[i].title} stagger={40} />
             </h1>
-            <p
-              key={`s-${i}`}
-              className="mt-6 text-lg text-white/85 max-w-xl fade-up"
-            >
+            <p key={`s-${i}`} className="mt-6 text-lg text-white/85 max-w-xl fade-up">
               {heroSlides[i].subtitle}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -119,7 +108,10 @@ function Hero() {
                 </Link>
               </MagneticButton>
               <MagneticButton>
-                <Link to="/donate" className="btn-outline-ink btn-outline-ink-hover !text-white !border-white/70 hover:!bg-white hover:!text-brand-ink">
+                <Link
+                  to="/donate"
+                  className="btn-outline-ink btn-outline-ink-hover !text-white !border-white/70 hover:!bg-white hover:!text-brand-ink"
+                >
                   Donate now
                 </Link>
               </MagneticButton>
@@ -164,7 +156,11 @@ function Impact() {
   return (
     <section className="relative bg-cream section-y overflow-hidden">
       <div className="blob w-72 h-72 -top-10 -left-10" aria-hidden />
-      <div className="blob w-96 h-96 bottom-0 right-0" style={{ animationDelay: "-8s" }} aria-hidden />
+      <div
+        className="blob w-96 h-96 bottom-0 right-0"
+        style={{ animationDelay: "-8s" }}
+        aria-hidden
+      />
       <div className="container-mirani relative">
         <Reveal className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-on-light dark:text-brand cb:text-secondary">
@@ -186,9 +182,7 @@ function Impact() {
                 suffix={s.suffix}
                 className="text-4xl md:text-5xl font-bold text-ink tabular-nums"
               />
-              <div className="mt-2 text-sm font-medium text-muted-foreground">
-                {s.label}
-              </div>
+              <div className="mt-2 text-sm font-medium text-muted-foreground">{s.label}</div>
             </Reveal>
           ))}
         </div>
@@ -210,7 +204,11 @@ function CampaignsPreview() {
               <TextReveal text="Where your support is going right now." />
             </h2>
           </div>
-          <Link to="/blogs" search={{ category: "Campaign" }} className="text-sm font-semibold text-ink hover:text-brand-on-light dark:hover:text-brand cb:hover:text-secondary inline-flex items-center gap-1">
+          <Link
+            to="/blogs"
+            search={{ category: "Campaign" }}
+            className="text-sm font-semibold text-ink hover:text-brand-on-light dark:hover:text-brand cb:hover:text-secondary inline-flex items-center gap-1"
+          >
             View all campaigns <ArrowRight className="h-4 w-4" />
           </Link>
         </Reveal>
@@ -240,14 +238,13 @@ function CampaignsPreview() {
               <div className="relative p-6 flex-1 flex flex-col">
                 <h3 className="text-xl font-semibold">{c.title}</h3>
                 <p className="mt-3 text-sm text-brand-ink-foreground/70 flex-1">{c.excerpt}</p>
-                <Link
-                  to="/blogs/$slug"
-                  params={{ slug: c.slug }}
+                <a
+                  href={`/blog-reader/${c.slug}`}
                   className="mt-5 inline-flex items-center gap-1 text-brand font-semibold text-sm group/link"
                 >
                   Read more
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-1" />
-                </Link>
+                </a>
               </div>
             </Reveal>
           ))}
@@ -270,9 +267,8 @@ function AboutPreview() {
             <TextReveal text="Three pillars. One mission." />
           </h2>
           <p className="mt-4 text-muted-foreground">
-            At Mirani Foundation, we champion Health, Education, and Social
-            Justice — working hand in hand with communities to create lasting
-            change, one act of care at a time.
+            At Mirani Foundation, we champion Health, Education, and Social Justice — working hand
+            in hand with communities to create lasting change, one act of care at a time.
           </p>
         </Reveal>
 
@@ -325,7 +321,10 @@ function GalleryPreview() {
               <TextReveal text="Moments from the field." />
             </h2>
           </div>
-          <Link to="/gallery" className="text-sm font-semibold text-ink hover:text-brand-on-light dark:hover:text-brand cb:hover:text-secondary inline-flex items-center gap-1">
+          <Link
+            to="/gallery"
+            className="text-sm font-semibold text-ink hover:text-brand-on-light dark:hover:text-brand cb:hover:text-secondary inline-flex items-center gap-1"
+          >
             View all photos <ArrowRight className="h-4 w-4" />
           </Link>
         </Reveal>

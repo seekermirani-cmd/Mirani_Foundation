@@ -55,7 +55,7 @@
   --radius: 0.75rem;
 
   /* Brand */
-  --brand: oklch(0.72 0.18 55);              /* #F58220 orange */
+  --brand: oklch(0.72 0.18 55); /* #F58220 orange */
   --brand-foreground: oklch(1 0 0);
   /* On-light variant — for any orange TEXT or orange BUTTON FILL sitting on
      a white/cream surface (nav active link, filled CTA buttons, small
@@ -65,15 +65,15 @@
      passes both directions: #C2410C text on white = 5.18:1, white text on
      a #C2410C fill = 5.18:1. Do not use this on dark surfaces — prefer the
      base --brand there, it already passes at ~8.1:1. */
-  --brand-on-light: #C2410C;                 /* oklch(0.55 0.19 40) approx */
-  --ink: oklch(0.16 0 0);                    /* near-black */
-  --cream: oklch(0.985 0.012 80);            /* #FDF8F2 warm cream */
+  --brand-on-light: #c2410c; /* oklch(0.55 0.19 40) approx */
+  --ink: oklch(0.16 0 0); /* near-black */
+  --cream: oklch(0.985 0.012 80); /* #FDF8F2 warm cream */
 
   /* Fixed (non-flipping) ink pair — for surfaces that must always be a
      dark surface with light text, regardless of theme (footer, solid CTA
      pills, hero base, etc). Intentionally NOT redefined in .dark or .cb. */
-  --brand-ink: oklch(0.17 0.006 55);         /* same near-black used by light-mode --ink today */
-  --brand-ink-foreground: oklch(0.98 0 0);   /* white */
+  --brand-ink: oklch(0.17 0.006 55); /* same near-black used by light-mode --ink today */
+  --brand-ink-foreground: oklch(0.98 0 0); /* white */
 
   /* Semantic */
   --background: oklch(1 0 0);
@@ -166,20 +166,22 @@
   /* Primary — brand orange, deepened from the marketing #F58220 so text
      and icons drawn in it clear 4.5:1 on white. Same hue family as brand,
      so the identity is preserved, just tuned for accessibility. */
-  --primary: oklch(0.556 0.129 54.8);   /* #AB5B16 */
+  --primary: oklch(0.556 0.129 54.8); /* #AB5B16 */
   --primary-foreground: oklch(1 0 0);
   --brand: oklch(0.556 0.129 54.8);
   --brand-foreground: oklch(1 0 0);
-  --brand-on-light: oklch(0.556 0.129 54.8); /* alias to the already-safe cb brand — avoid a second orange */
+  --brand-on-light: oklch(
+    0.556 0.129 54.8
+  ); /* alias to the already-safe cb brand — avoid a second orange */
 
   /* Secondary — Okabe-Ito Blue, the single hue CUD research shows stays
      distinguishable from orange across every common CVD type. */
-  --secondary: oklch(0.532 0.131 244);  /* #0072B2 */
+  --secondary: oklch(0.532 0.131 244); /* #0072B2 */
   --secondary-foreground: oklch(1 0 0);
 
   --muted: oklch(0.96 0.004 75);
   --muted-foreground: oklch(0.4 0.01 60);
-  --accent: oklch(0.95 0.02 244);       /* faint blue-tinted hover, not a categorical hue */
+  --accent: oklch(0.95 0.02 244); /* faint blue-tinted hover, not a categorical hue */
   --accent-foreground: oklch(0.16 0 0);
 
   /* Destructive — deliberately pushed darker AND further toward red (not
@@ -236,11 +238,23 @@
   backdrop-filter: blur(6px) saturate(115%);
   -webkit-backdrop-filter: blur(6px) saturate(115%);
 }
-.cb .glass-card-border::before { opacity: 0.2; }
-.cb .glass-card-border:hover::before { opacity: 0.45; }
-.cb .glass-card-border::after { display: none; }
-.cb .blob { opacity: 0.15; filter: blur(50px); animation-duration: 32s; }
-.cb .shine-sweep::after { display: none; }
+.cb .glass-card-border::before {
+  opacity: 0.2;
+}
+.cb .glass-card-border:hover::before {
+  opacity: 0.45;
+}
+.cb .glass-card-border::after {
+  display: none;
+}
+.cb .blob {
+  opacity: 0.15;
+  filter: blur(50px);
+  animation-duration: 32s;
+}
+.cb .shine-sweep::after {
+  display: none;
+}
 .cb :where(.hover\:shadow-lg, .hover\:shadow-xl, .hover\:shadow-2xl):hover {
   box-shadow: 0 4px 14px oklch(0.16 0 0 / 0.1);
 }
@@ -252,7 +266,9 @@
 .cb .group:hover :where(.group-hover\:scale-105, .group-hover\:scale-110) {
   transform: scale(1.02);
 }
-.cb .magnetic { transition-duration: 0.15s; }
+.cb .magnetic {
+  transition-duration: 0.15s;
+}
 
 /* CB mode: slightly stronger typography and taller controls for readability. */
 .cb body {
@@ -274,16 +290,27 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    transition: background-color 0.45s ease, color 0.45s ease;
+    transition:
+      background-color 0.45s ease,
+      color 0.45s ease;
   }
-  h1, h2, h3, h4 { letter-spacing: -0.02em; }
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.02em;
+  }
   :focus-visible {
     outline: 2px solid var(--color-brand);
     outline-offset: 2px;
@@ -294,15 +321,21 @@
 /* Cross-fade every themed surface when the mode switches */
 .theme-fade,
 .theme-fade * {
-  transition: background-color 0.45s ease, border-color 0.45s ease, color 0.45s ease,
-    box-shadow 0.45s ease, opacity 0.45s ease !important;
+  transition:
+    background-color 0.45s ease,
+    border-color 0.45s ease,
+    color 0.45s ease,
+    box-shadow 0.45s ease,
+    opacity 0.45s ease !important;
 }
 
 @utility container-mirani {
   margin-inline: auto;
   padding-inline: 1.25rem;
   max-width: 80rem;
-  @media (min-width: 640px) { padding-inline: 2rem; }
+  @media (min-width: 640px) {
+    padding-inline: 2rem;
+  }
 }
 
 @utility btn-brand {
@@ -323,7 +356,9 @@
   min-height: 44px;
 }
 @utility btn-brand-hover {
-  &:hover { background-color: var(--color-ink); }
+  &:hover {
+    background-color: var(--color-ink);
+  }
 }
 
 @utility btn-ink {
@@ -341,7 +376,9 @@
   min-height: 44px;
 }
 @utility btn-ink-hover {
-  &:hover { background-color: var(--color-brand); }
+  &:hover {
+    background-color: var(--color-brand);
+  }
 }
 
 @utility btn-outline-ink {
@@ -360,12 +397,80 @@
   min-height: 44px;
 }
 @utility btn-outline-ink-hover {
-  &:hover { background-color: var(--color-brand-ink); color: var(--color-brand-ink-foreground); }
+  &:hover {
+    background-color: var(--color-brand-ink);
+    color: var(--color-brand-ink-foreground);
+  }
 }
 
 @utility section-y {
   padding-block: 4rem;
-  @media (min-width: 768px) { padding-block: 6rem; }
+  @media (min-width: 768px) {
+    padding-block: 6rem;
+  }
+}
+
+.rich-text-editor {
+  position: relative;
+}
+
+.rich-text-editor[data-empty="true"]::before {
+  content: attr(data-placeholder);
+  position: absolute;
+  color: var(--color-muted-foreground);
+  pointer-events: none;
+}
+
+.rich-text-content :where(p, ul, ol, blockquote) {
+  margin-block: 1em;
+}
+
+.rich-text-content :where(h2, h3, h4) {
+  color: var(--color-ink);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-block: 1.35em 0.55em;
+}
+
+.rich-text-content h2 {
+  font-size: 1.65rem;
+}
+
+.rich-text-content h3 {
+  font-size: 1.35rem;
+}
+
+.rich-text-content h4 {
+  font-size: 1.15rem;
+}
+
+.rich-text-content :where(ul, ol) {
+  padding-left: 1.35rem;
+}
+
+.rich-text-content ul {
+  list-style: disc;
+}
+
+.rich-text-content ol {
+  list-style: decimal;
+}
+
+.rich-text-content li {
+  margin-block: 0.35em;
+}
+
+.rich-text-content a {
+  color: var(--color-brand-on-light);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rich-text-content blockquote {
+  border-left: 3px solid var(--color-brand);
+  color: var(--color-muted-foreground);
+  padding-left: 1rem;
 }
 
 @utility fade-up {
@@ -373,8 +478,14 @@
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @utility ken-burns {
@@ -382,23 +493,34 @@
 }
 
 @keyframes kenBurns {
-  0% { transform: scale(1.02) translate3d(0, 0, 0); }
-  100% { transform: scale(1.15) translate3d(-1.5%, -1%, 0); }
+  0% {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1.15) translate3d(-1.5%, -1%, 0);
+  }
 }
 
 @utility marquee-x {
   animation: marqueeX 30s linear infinite;
 }
 @keyframes marqueeX {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @utility glass-header {
   background-color: var(--color-glass-bg);
   backdrop-filter: blur(10px) saturate(140%);
   -webkit-backdrop-filter: blur(10px) saturate(140%);
-  transition: background-color 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease;
+  transition:
+    background-color 0.35s ease,
+    backdrop-filter 0.35s ease,
+    box-shadow 0.35s ease;
 }
 @utility glass-header-scrolled {
   background-color: var(--color-glass-bg-strong);
@@ -421,16 +543,26 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, var(--color-brand) 0%, transparent 35%, transparent 65%, var(--color-brand) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-brand) 0%,
+      transparent 35%,
+      transparent 65%,
+      var(--color-brand) 100%
+    );
     opacity: 0.35;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
     transition: opacity 0.4s ease;
     z-index: 1;
   }
-  &:hover::before { opacity: 0.75; }
+  &:hover::before {
+    opacity: 0.75;
+  }
   &::after {
     content: "";
     position: absolute;
@@ -441,7 +573,9 @@
     transition: opacity 0.4s ease;
     pointer-events: none;
   }
-  &:hover::after { opacity: 1; }
+  &:hover::after {
+    opacity: 1;
+  }
 }
 
 @utility blob {
@@ -454,9 +588,15 @@
   pointer-events: none;
 }
 @keyframes blobDrift {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(4%, -6%) scale(1.08); }
-  100% { transform: translate(-5%, 4%) scale(0.96); }
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(4%, -6%) scale(1.08);
+  }
+  100% {
+    transform: translate(-5%, 4%) scale(0.96);
+  }
 }
 
 /* Magnetic buttons — JS sets --mx/--my; CSS just applies the transform */
@@ -481,7 +621,9 @@
     transform: skewX(-20deg);
     transition: left 0.65s ease;
   }
-  &:hover::after { left: 130%; }
+  &:hover::after {
+    left: 130%;
+  }
 }
 
 /* Ripple on click — JS appends a .ripple-dot span, this animates it */
@@ -494,7 +636,10 @@
   pointer-events: none;
 }
 @keyframes rippleAnim {
-  to { transform: scale(2.6); opacity: 0; }
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+  }
 }
 
 /* Word-by-word text reveal */
@@ -510,7 +655,10 @@
   animation: wordReveal 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 @keyframes wordReveal {
-  to { transform: translateY(0); opacity: 1; }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Cursor spotlight */
@@ -520,16 +668,24 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.4s ease;
-  background: radial-gradient(600px circle at var(--spot-x, 50%) var(--spot-y, 50%), var(--spotlight-color), transparent 55%);
+  background: radial-gradient(
+    600px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    var(--spotlight-color),
+    transparent 55%
+  );
 }
 @utility cursor-spotlight-active {
   opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
   }
-  .blob { animation: none; }
+  .blob {
+    animation: none;
+  }
 }

@@ -5,6 +5,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { type BlogPost } from "@/lib/site-data";
 import { BLOG_IMAGE_PLACEHOLDER, useBlogPosts } from "@/lib/blog-store";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
+import { ArrowRight } from "lucide-react";
 
 const CATEGORIES = ["All", "Campaign", "Story", "Press Release", "Publication"] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -94,9 +95,8 @@ function BlogsPage() {
 
 function BlogCard({ post }: { post: BlogPost }) {
   return (
-    <Link
-      to="/blogs/$slug"
-      params={{ slug: post.slug }}
+    <a
+      href={`/blog-reader/${post.slug}`}
       className="group rounded-2xl overflow-hidden bg-card border border-border hover:border-ink transition-colors flex flex-col"
     >
       <div className="aspect-[16/10] overflow-hidden">
@@ -128,7 +128,11 @@ function BlogCard({ post }: { post: BlogPost }) {
           {post.title}
         </h3>
         <p className="mt-2 text-sm text-muted-foreground flex-1">{post.excerpt}</p>
+        <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-brand-on-light dark:text-brand cb:text-secondary">
+          Read more
+          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </span>
       </div>
-    </Link>
+    </a>
   );
 }

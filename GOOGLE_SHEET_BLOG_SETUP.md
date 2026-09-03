@@ -62,21 +62,23 @@ set `SHEET_SECRET` in step 3 — leave both unset if you skipped that step.
 
 That's it — once these are set, admin logins at `/admin/login`
 (password from `ADMIN_PASSWORD`, see the earlier setup notes) can publish
-posts from `/admin/blogs/new`, and every visitor to `/blogs` will see them,
-since the source of truth is now the sheet rather than a single browser.
+and delete sheet-backed posts from `/admin/blogs/new`, and every visitor to
+`/blogs` will see the current sheet contents since the source of truth is
+now the sheet rather than a single browser.
 
 ## How it fits together
 
 ```
 Admin form  →  POST /api/blogs  →  appendBlogPostToSheet()  →  Apps Script doPost()  →  new row in "Posts"
+Admin panel →  DELETE /api/blogs?slug=... → deleteBlogPostFromSheet() → Apps Script doPost(action=delete) → row removed
 /blogs page →  GET  /api/blogs  →  fetchBlogPostsFromSheet() →  Apps Script doGet()   →  posts as JSON
 ```
 
 - `src/lib/server/google-sheets.ts` — talks to the Apps Script URL
 - `src/routes/api.blogs.ts` — validates input, requires an admin session
   for writes, dedupes slugs
-- `src/lib/blog-store.ts` — client-side fetch/post helpers used by the
-  blog pages and the admin form
+- `src/lib/blog-store.ts` — client-side fetch/post/delete helpers used by
+  the blog pages and the admin form
 
 ## Limitations to know about
 

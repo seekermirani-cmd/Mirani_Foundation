@@ -50,14 +50,46 @@ export async function addBlogPost(input: NewBlogPostInput): Promise<BlogPost> {
   return data.post;
 }
 
-/** Fetches admin-created posts from the sheet; falls back to [] on any failure. */
+/** Fetches admin-created posts from the sheet. */
+export async function fetchAdminBlogPosts(): Promise<BlogPost[]> {
+  const res = await fetch("/api/blogs");
+  const data = (await res.json().catch(() => null)) as {
+    success?: boolean;
+    posts?: BlogPost[];
+    error?: string;
+  } | null;
+
+  if (!res.ok || !data?.success || !Array.isArray(data.posts)) {
+    throw new Error(data?.error ?? "Failed to load admin-created posts.");
+  }
+
+  return data.posts;
+}
+
+/** Public pages keep working with built-in posts even when the sheet is unavailable. */
 async function fetchSheetPosts(): Promise<BlogPost[]> {
   try {
-    const res = await fetch("/api/blogs");
-    const data = (await res.json()) as { success?: boolean; posts?: BlogPost[] };
-    return data.success && Array.isArray(data.posts) ? data.posts : [];
+    return await fetchAdminBlogPosts();
   } catch {
     return [];
+  }
+}
+
+/** Deletes an admin-created blog post from the shared Google Sheet. */
+export async function deleteBlogPost(slug: string): Promise<void> {
+  const res = await fetch(`/api/blogs?slug=${encodeURIComponent(slug)}`, {
+    method: "DELETE",
+  });
+
+  let data: { success?: boolean; error?: string } = {};
+  try {
+    data = await res.json();
+  } catch {
+    // fall through to the generic error below
+  }
+
+  if (!res.ok || !data.success) {
+    throw new Error(data.error ?? "Failed to delete the post. Please try again.");
   }
 }
 

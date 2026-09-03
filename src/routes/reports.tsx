@@ -4,13 +4,14 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { reports } from "@/lib/site-data";
 import { Download, FileText, FileSpreadsheet, FileType2 } from "lucide-react";
 
-const TYPES = ["All", "PDF", "Excel", "Word"] as const;
-
 export const Route = createFileRoute("/reports")({
   head: () => ({
     meta: [
       { title: "Reports — Mirani Foundation" },
-      { name: "description", content: "Download our annual reports, financial statements and research briefs." },
+      {
+        name: "description",
+        content: "Download our annual reports, financial statements and research briefs.",
+      },
       { property: "og:title", content: "Reports — Mirani Foundation" },
       { property: "og:url", content: "/reports" },
     ],
@@ -23,7 +24,8 @@ const iconFor = (t: string) =>
   t === "Excel" ? FileSpreadsheet : t === "Word" ? FileType2 : FileText;
 
 function ReportsPage() {
-  const [type, setType] = useState<(typeof TYPES)[number]>("All");
+  const types = useMemo(() => ["All", ...Array.from(new Set(reports.map((r) => r.type)))], []);
+  const [type, setType] = useState("All");
 
   const list = useMemo(() => {
     const filtered = type === "All" ? reports : reports.filter((r) => r.type === type);
@@ -47,7 +49,7 @@ function ReportsPage() {
       <section className="section-y">
         <div className="container-mirani">
           <div className="flex flex-wrap gap-2">
-            {TYPES.map((t) => (
+            {types.map((t) => (
               <button
                 key={t}
                 onClick={() => setType(t)}
@@ -81,7 +83,12 @@ function ReportsPage() {
                       </p>
                     </div>
                   </div>
-                  <a href={r.href} download className="btn-brand btn-brand-hover shrink-0">
+                  <a
+                    href={r.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-brand btn-brand-hover shrink-0"
+                  >
                     <Download className="h-4 w-4" />
                     <span className="hidden sm:inline">Download</span>
                   </a>

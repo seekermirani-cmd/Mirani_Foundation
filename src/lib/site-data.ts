@@ -7,13 +7,16 @@ import gallery3 from "@/assets/gallery-3.jpg";
 import gallery4 from "@/assets/gallery-4.jpg";
 import gallery5 from "@/assets/gallery-5.jpg";
 import gallery6 from "@/assets/gallery-6.jpg";
+import teamDeepaRaikwad from "@/assets/team-deepa-raikwad.jpg";
+import teamGovindRajbhar from "@/assets/team-govind-rajbhar.jpg";
+import teamHanaMirani from "@/assets/team-hana-mirani.jpg";
+import teamHareshMirani from "@/assets/team-haresh-mirani.jpg";
+import teamYaminiBabani from "@/assets/team-yamini-babani.jpg";
 
 // NOTE: The content JSON references dedicated photos for campaigns, blog
-// posts and team members (e.g. "campaign-feeding-hope.jpg",
-// "team-haresh-mirani.jpg") that are not yet available in this project.
-// Until those real photos are supplied, the existing gallery/hero images
-// are reused as placeholders so every card still renders correctly. Swap
-// the imports below for the real files once they're added to src/assets.
+// posts (e.g. "campaign-feeding-hope.jpg") that are not yet available in
+// this project. Until those real photos are supplied, the existing gallery
+// and hero images are reused as placeholders so every card still renders.
 
 export const heroSlides = [
   {
@@ -92,30 +95,30 @@ export const pillars = [
     image: heroHealth,
     short:
       "A healthy body is the foundation of a healthy mind — and a healthy mind is what allows a community to grow.",
-    long:
-      "We support organizations delivering direct medical care to people who'd otherwise have none — from wheelchairs and mobility aid that restore independence, to medicines and checkups that reach people right where they live. Every act of care, however small, is aimed at building communities strong enough to thrive on their own terms.",
+    long: "We support organizations delivering direct medical care to people who'd otherwise have none — from wheelchairs and mobility aid that restore independence, to medicines and checkups that reach people right where they live. Every act of care, however small, is aimed at building communities strong enough to thrive on their own terms.",
   },
   {
     title: "Education",
     image: heroEducation,
     short:
       "Poverty repeats itself when a child's postcode decides their future. We're here to break that cycle.",
-    long:
-      "We fund tuition, learning resources and educational infrastructure — including equipment for schools serving hearing-challenged students — for children in India and abroad. Every rupee spent here is an investment in someone who will go on to lift others up in turn.",
+    long: "We fund tuition, learning resources and educational infrastructure — including equipment for schools serving hearing-challenged students — for children in India and abroad. Every rupee spent here is an investment in someone who will go on to lift others up in turn.",
   },
   {
     title: "Social Justice",
     image: heroJustice,
-    short:
-      "Strong communities are inclusive ones — and inclusion has to be built, not assumed.",
-    long:
-      "Our work is about championing equality, tolerance and understanding — standing behind the initiatives, partnerships and grassroots organizations already doing this work on the ground, and giving them the resources to go further.",
+    short: "Strong communities are inclusive ones — and inclusion has to be built, not assumed.",
+    long: "Our work is about championing equality, tolerance and understanding — standing behind the initiatives, partnerships and grassroots organizations already doing this work on the ground, and giving them the resources to go further.",
   },
 ];
 
 export const galleryImages = [
   { src: gallery1, caption: "Food drive, Pune district", campaign: "Monsoon Relief" },
-  { src: gallery2, caption: "Learning Lamps classroom, Beed", campaign: "Learning Lamps Scholarship" },
+  {
+    src: gallery2,
+    caption: "Learning Lamps classroom, Beed",
+    campaign: "Learning Lamps Scholarship",
+  },
   { src: gallery3, caption: "Free paediatric camp, Nashik", campaign: "Monsoon Medical Camp" },
   { src: gallery4, caption: "Women's tailoring cooperative", campaign: "Voices for Dignity" },
   { src: gallery5, caption: "Community sapling drive", campaign: "Green Villages" },
@@ -159,7 +162,8 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "kicking-towards-a-brighter-future",
     title: "Kicking Towards a Brighter Future",
-    excerpt: "200 underprivileged children, one unforgettable football tournament — supported by the Mirani Foundation.",
+    excerpt:
+      "200 underprivileged children, one unforgettable football tournament — supported by the Mirani Foundation.",
     content:
       "The Mirani Foundation recently supported the Robin Hood Army's (RHA) Citizens Cup in Mumbai — a football tournament for underprivileged children, and a celebration of 10 years of RHA's work. By providing drinking water and ORS to the participating kids, we aimed to quench more than just their thirst: to nourish their dreams, and remind them that their well-being matters and their voices deserve to be heard.\n\nOn a sunny day in Mumbai, 200 underprivileged children gathered at the Airoli Euro School Turf, representing 10 RHA chapters from across the city. The venue's generous ground owner reduced costs to support the cause, and sponsors — including the Mirani Foundation — came together with goodies, caps and jerseys to make the day memorable.\n\nOur own foundation members, Govind and Yamini, were central to making the day happen — Govind working behind the scenes to keep everything running smoothly, and Yamini coordinating communications and donations with warmth and care. Their contributions reflect exactly the kind of collective kindness this event was built on.\n\nThe tournament was more than a sporting event — it was a platform for children from diverse backgrounds to showcase their talent, build teamwork and discipline, and simply have a day of unfiltered fun. As the Robin Hood Army and its supporters wrapped up the event, the shared takeaway was clear: together, we can create a world where every child has the opportunity to thrive.",
     category: "Campaign",
@@ -179,7 +183,8 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "against-all-odds-dr-haresh-mirani",
     title: "Against All Odds: Dr. Haresh Mirani's Inspiring Life Story",
-    excerpt: "From a refugee family displaced by Partition to founding the Mirani Trust — a story of resilience.",
+    excerpt:
+      "From a refugee family displaced by Partition to founding the Mirani Trust — a story of resilience.",
     content:
       "Some stories don't begin with ambition — they begin with survival. Dr. Haresh Mirani's does.\n\nHis life took root in the shadow of the Partition of India. When British rule ended in 1947, the subcontinent split along religious lines, and the mass migrations that followed brought violence on a scale neither the departing British nor the new governments had anticipated. Haresh Mirani's parents were among those swept into this upheaval — fleeing Sindh as it became part of Pakistan, first finding shelter in a refugee camp outside Bombay, later settling in the crowded Mahim district.\n\nHis father, K. Mirani, took a clerical job with the Burmah/Shell organization and poured everything into one goal: his son's education. It came at real cost — money was tight, circumstances were hard — but it paid off. In 1979, Haresh graduated from Bombay University as a qualified doctor, just a year after his father's death. He married soon after and left for the United States, where three more years of requalification stood between him and practicing medicine — which he finally began in 1984.\n\nThe next twelve years were defined by discipline: Dr. Mirani built the largest, most successful medical practice in the Greater Knoxville area, alongside a strong investment portfolio. Then, in April 1996, a catastrophic car accident shattered his left ankle and ended the career he'd spent two decades building.\n\nThe recovery that followed — injury, denial, depression, anger, and eventually acceptance — taught him something his wealth couldn't: that material success held little long-term meaning. As a Hindu, he holds a deep belief in karma and the cycles of life, and when he noticed a positive mindset accelerating his physical healing, it opened a spiritual inquiry that eventually took him to the summit of Kilimanjaro — and from there, to founding the Mirani Trust, born from a determination to give back everything life had given him.",
     category: "Story",
@@ -189,7 +194,8 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "why-kiva-touches-my-heart",
     title: "Why Kiva Touches My Heart",
-    excerpt: "A reflection on childhood hardship, dignity, and why micro-lending resonates so deeply.",
+    excerpt:
+      "A reflection on childhood hardship, dignity, and why micro-lending resonates so deeply.",
     content:
       "There's a reason Dr. Mirani feels a personal pull toward Kiva, the platform connecting small lenders to entrepreneurs across the developing world — and it goes back to his own childhood.\n\nGrowing up, money in his household didn't always stretch to the end of the month. He remembers his father occasionally taking small loans to bridge the gap — loans that were always, meticulously, repaid. That memory of quiet financial dignity is exactly what he sees mirrored in Kiva's borrowers: not people asking for a handout, but for the means to improve their own situation.\n\nThe loans are often modest but transformative — a faster sewing machine for a woman growing her tailoring business, a cow or chickens for a farmer expanding into eggs and milk, a repair bill for a taxi driver's tuk-tuk. It was in meditation that Dr. Mirani landed on the philosophy that captures it best: \"I want to enable the poor without being an enabler.\"\n\nThis isn't abstract for him. In his travels he's visited many of the 90+ countries where Kiva operates — met taxi drivers in Kenya, goat farmers in India — people he's sat across from, not statistics on a screen. And the numbers back up what he's seen firsthand: Kiva reports a repayment rate above 94%, a striking testament to the work ethic of its borrowers.\n\nThe Mirani Foundation's own giving works differently — support with no expectation of repayment, aimed at the most vulnerable communities. But Kiva fills a gap neither banks nor most charities reach: the small entrepreneur working quietly and persistently to lift their family forward.",
     category: "Story",
@@ -199,7 +205,8 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "combating-hunger-in-india",
     title: "A Heartfelt Mission to Combat Hunger in India",
-    excerpt: "189 million undernourished, and a chance reunion that led to direct action in Nashik.",
+    excerpt:
+      "189 million undernourished, and a chance reunion that led to direct action in Nashik.",
     content:
       "India's economic growth over recent decades has been remarkable — but beneath that progress sits a hunger crisis of staggering scale. According to the India Foodbanking Network: 189.2 million people, roughly 14% of the population, face undernourishment; 20% of children under 5 are underweight; 34.7% suffer stunted growth; and 51.4% of women of reproductive age (15–49) battle anemia.\n\nThe COVID-19 pandemic made an already hard situation worse, stripping away livelihoods for millions through shutdowns, layoffs and lockdowns. It was in this climate that Dr. Haresh Mirani reconnected with an old school friend, social worker Kashiram Jashnani. That reunion became a turning point: Jashnani introduced Dr. Mirani to the depth of the hunger crisis unfolding in Nashik, Maharashtra, and out of that conversation, the Mirani Foundation was born.\n\nThrough Jashnani's on-the-ground efforts, the Foundation's first act of aid reached over 25 families at Puj Sindhi Panchayat, Deolali Camp, Nashik — delivering essential food, beds, and a wheelchair. It was never meant to be a one-off. Since then, social activists and organizations across India have approached the Foundation seeking support for marginalized communities, and the response has kept growing.\n\nAs Winston Churchill once put it: \"We make a living by what we get. We make a life by what we give.\" That's the principle the Mirani Foundation continues to operate by — expanding its reach one family, one community, at a time.",
     category: "Story",
@@ -219,7 +226,8 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "a-year-of-giving-yaminis-journey",
     title: "A Year of Giving: Yamini's Journey with Mirani Foundation",
-    excerpt: "A first-person reflection, one year into the work — on what giving actually teaches you.",
+    excerpt:
+      "A first-person reflection, one year into the work — on what giving actually teaches you.",
     content:
       "Completing a full year with the Foundation isn't just a reporting milestone — it's a moment worth sitting with. Looking back, there's real pride in what the Mirani Foundation family has built together in service of others.\n\nThere was a version of \"me\" before this work — a simple person with modest wants, average expectations, small goals. Content, but not like this. The shift wasn't about gaining something new; it was about learning something: that happiness has a practice, and that practice is giving, not getting.\n\nBefore this work, money felt like the thing standing between me and happiness. But money, it turns out, is only useful for making a living — not for making a life. It buys tools: a car to get somewhere, food for energy, clothes for warmth. Useful, yes. Happiness-producing, no. A pair of $2,500 shoes won't move the needle on joy — but $10 worth of bread handed to someone who needs it will, every time.\n\nReal happiness lives somewhere else entirely: in shared moments with people we love, meals eaten together, helping someone get what they're after, time in nature, music, dancing. The best things are free. And when there's money left over after covering what's genuinely needed, the wisest use of it is sharing it with someone who needs it more — a trip away might buy a few days of peace, but feeding hungry children buys something that lasts.\n\nThis isn't a rejection of enjoying life's pleasures — it's a case for balance, for prioritizing well. This reflection, more emotional journal than formal report by this point, captures a year's worth of projects — most of them carried out close to home.",
     category: "Publication",
@@ -228,62 +236,66 @@ export const blogPosts: BlogPost[] = [
   },
 ];
 
-// Placeholder images (see note above) — real files: team-haresh-mirani.jpg,
-// team-hana-mirani.jpg, team-govind-rajbhar.jpg, team-yamini-babani.jpg,
-// team-deepa-raikwad.jpg
 export const teamMembers = [
   {
     name: "Haresh Mirani",
     role: "Founder",
-    image: gallery3,
+    image: teamHareshMirani,
     quote:
       "We started this in a two-room clinic. A decade later, our belief is the same — dignity is not a service, it's a right.",
   },
   {
     name: "Hana Mirani",
     role: "Founder",
-    image: gallery4,
+    image: teamHanaMirani,
     quote:
       "Every visit, every conversation reminds us why we started — the people we meet are the real teachers.",
   },
   {
     name: "Govind Rajbhar",
     role: "Director and Trustee",
-    image: gallery5,
+    image: teamGovindRajbhar,
     quote:
       "The work behind the scenes is what makes the visible impact possible — every detail matters.",
   },
   {
     name: "Yamini Babani",
     role: "Director and Trustee",
-    image: gallery6,
+    image: teamYaminiBabani,
     quote:
       "Real happiness comes from giving, not getting. Everything we do here is built on that belief.",
   },
   {
     name: "Deepa Raikwad",
     role: "Trustee",
-    image: gallery1,
+    image: teamDeepaRaikwad,
     quote:
       "Every rupee we spend is a rupee someone trusted us with. That trust is the standard we hold ourselves to.",
   },
 ];
 
 export const reports = [
-  { title: "Annual Report 2024–25", year: 2025, type: "PDF" as const, size: "3.2 MB", href: "#" },
-  { title: "Financial Statements 2024–25", year: 2025, type: "PDF" as const, size: "1.8 MB", href: "#" },
-  { title: "Impact Study — Monsoon Medical Camps", year: 2025, type: "PDF" as const, size: "2.4 MB", href: "#" },
-  { title: "Learning Lamps Cohort Data", year: 2025, type: "Excel" as const, size: "480 KB", href: "#" },
-  { title: "Annual Report 2023–24", year: 2024, type: "PDF" as const, size: "3.0 MB", href: "#" },
-  { title: "Volunteer Handbook", year: 2024, type: "Word" as const, size: "620 KB", href: "#" },
-  { title: "Financial Statements 2023–24", year: 2024, type: "PDF" as const, size: "1.6 MB", href: "#" },
-  { title: "Annual Report 2022–23", year: 2023, type: "PDF" as const, size: "2.8 MB", href: "#" },
+  {
+    title: "Report 1",
+    year: 2026,
+    type: "Word" as const,
+    size: "Google Doc",
+    href: "https://docs.google.com/document/d/1DGAAzvyiHFwiYqnLzX9ca7RteaK5_gFu/edit?usp=drivesdk&ouid=111740577265432819636&rtpof=true&sd=true",
+  },
+  {
+    title: "Report 2",
+    year: 2026,
+    type: "Word" as const,
+    size: "Google Doc",
+    href: "https://docs.google.com/document/d/1Zok4HAlQGz5JDKYH8oGi_CeHnzADN3-3qrcR9bVnrAI/edit?usp=drivesdk",
+  },
 ];
 
 export const contactInfo = {
   phone: "+91 9322033429",
   email: "seekermirani@gmail.com",
   address: "204 Shivkrupa Apartment, Opp. IIT Main Gate, Powai, Mumbai, Maharashtra - 400076",
+  mapUrl: "https://maps.app.goo.gl/1uJbzWaQjXMktNK8A?g_st=ac",
   bank: {
     accountName: "Seeker Mirani India Foundation",
     accountNumber: "023710200016232",
